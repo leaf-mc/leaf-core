@@ -1,0 +1,12 @@
+name: LeafCore
+version: @version@
+main: mc.leaf.core.LeafCore
+api-version: 1.13
+prefix: Leaf
+load: STARTUP
+authors: [alexpado]
+description: LeafCore is a library plugin offering tools for plugin developers, making some aspect of the plugin development way easier.
+commands:
+  leaf:
+    usage: /leaf
+    description: Main command for the library.
