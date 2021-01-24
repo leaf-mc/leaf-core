@@ -1,4 +1,4 @@
-package mc.leaf.core.services.completion;
+package mc.leaf.core.services.completion.enums;
 
 public enum FilterMode {
     STRICT(true), STARTING_WITH(false);

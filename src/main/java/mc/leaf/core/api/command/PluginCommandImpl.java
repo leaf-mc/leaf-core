@@ -9,8 +9,13 @@ import mc.leaf.core.api.command.interfaces.IParameterConverter;
 import mc.leaf.core.api.command.interfaces.IPluginCommand;
 import mc.leaf.core.interfaces.ILeafCore;
 import mc.leaf.core.services.completion.CompletionServiceImpl;
+import mc.leaf.core.services.completion.SyntaxContainer;
+import mc.leaf.core.services.completion.impl.MatchSyntax;
+import mc.leaf.core.services.completion.impl.PassThroughSyntax;
+import mc.leaf.core.services.completion.impl.SelectiveSyntax;
 import mc.leaf.core.services.completion.interfaces.ICompletionService;
 import mc.leaf.core.services.completion.interfaces.IMatchingResult;
+import mc.leaf.core.services.completion.interfaces.ISyntax;
 import org.bukkit.Bukkit;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
@@ -25,119 +30,12 @@ public class PluginCommandImpl implements IPluginCommand {
     private static final String PREFIX   = "§l[§aLeaf§bCore§r§l]";
     private static final String PREFIX_C = "[§aLeaf§bCore§r]";
 
-    private final ILeafCore                     core;
-    private final HashMap<Method, List<String>> commandMap = new HashMap<>();
+    private final ILeafCore                core;
+    private final HashMap<Method, SyntaxContainer> commandMap = new HashMap<>();
 
     protected PluginCommandImpl(ILeafCore core) {
         this.core = core;
         this.readCommandData();
-    }
-
-    private void readCommandData() {
-        for (Method declaredMethod : this.getClass().getDeclaredMethods()) {
-            if (declaredMethod.getAnnotation(Runnable.class) != null) {
-                Runnable r = declaredMethod.getAnnotation(Runnable.class);
-                this.commandMap.put(declaredMethod, Arrays.asList(r.value().split(" ")));
-            }
-        }
-    }
-
-    @Override
-    public final ILeafCore getCore() {
-        return this.core;
-    }
-
-    @Override
-    public final ICompletionService<Method> getCompletionService() {
-        return new CompletionServiceImpl<>(this.commandMap, this.core.getDynamicOptions());
-    }
-
-    /**
-     * Executes the given command, returning its success.
-     * <br>
-     * If false is returned, then the "usage" plugin.yml entry for this command (if defined) will be sent to the
-     * player.
-     *
-     * @param sender
-     *         Source of the command
-     * @param command
-     *         Command which was executed
-     * @param label
-     *         Alias of the command which was used
-     * @param args
-     *         Passed command arguments
-     *
-     * @return true if a valid command, otherwise false
-     */
-    @Override
-    public final boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-
-        try {
-            IMatchingResult<Method> matchingResult = this.getMatch(args);
-            Method                  exec           = matchingResult.getIdentifier();
-            Runnable                runnable       = exec.getAnnotation(Runnable.class);
-            PluginCommandImpl.validateExecutableStatus(sender, runnable);
-            List<Object> parameters = PluginCommandImpl.generateParameterList(matchingResult, exec, sender);
-            this.call(exec, parameters);
-        } catch (CommandException e) {
-            Bukkit.getLogger().severe(String
-                    .format("[LeafCore] An error occurred while handling the '%s' command: %s", label, e.getMessage()));
-            this.handle(e, sender);
-        }
-        return true;
-    }
-
-    /**
-     * Requests a list of possible completions for a command argument.
-     *
-     * @param sender
-     *         Source of the command.  For players tab-completing a command inside of a command block, this will be the
-     *         player, not the command block.
-     * @param command
-     *         Command which was executed
-     * @param alias
-     *         The alias used
-     * @param args
-     *         The arguments passed to the command, including final partial argument to be completed and command label
-     *
-     * @return A List of possible completions for the final argument, or null to default to the command executor
-     */
-    @Override
-    public final @NotNull List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
-        return this.getCompletionService().complete(String.join(" ", args));
-    }
-
-    @Override
-    public final void register(String name) {
-        PluginCommand command = Bukkit.getPluginCommand(name);
-        if (command != null) {
-            command.setExecutor(this);
-            command.setTabCompleter(this);
-        }
-    }
-
-    @Override
-    public void handle(CommandException exception, CommandSender sender) {
-        sender.sendMessage(String.format("%s §r§c%s", PREFIX, exception.getMessage()));
-    }
-
-    private Map<Method, List<String>> getCommandMapping() {
-        Map<Method, List<String>> map = new HashMap<>();
-
-        for (Method declaredMethod : this.getClass().getDeclaredMethods()) {
-            Runnable runnable = declaredMethod.getAnnotation(Runnable.class);
-
-            if (runnable != null) {
-                map.put(declaredMethod, Arrays.asList(runnable.value().split(" ")));
-            }
-        }
-
-        return map;
-    }
-
-    private IMatchingResult<Method> getMatch(String... args) {
-        return this.getCompletionService().getMatchingIdentifier(String.join(" ", args))
-                .orElseThrow(() -> new SyntaxException("Command not found. Please check your syntax."));
     }
 
     private static void validateExecutableStatus(CommandSender sender, Runnable runnable) {
@@ -195,6 +93,101 @@ public class PluginCommandImpl implements IPluginCommand {
             method.invoke(this, values.toArray());
         } catch (Exception e) {
             throw new ExecutionException(e, "Unable to execute the command.");
+        }
+    }
+
+    @Override
+    public final ICompletionService<Method> getCompletionService() {
+        return new CompletionServiceImpl<>(this.commandMap);
+    }
+
+    @Override
+    public final ILeafCore getCore() {
+        return this.core;
+    }
+
+    private IMatchingResult<Method> getMatch(String... args) {
+        return this.getCompletionService().getMatchingIdentifier(String.join(" ", args))
+                .orElseThrow(() -> new SyntaxException("Command not found. Please check your syntax."));
+    }
+
+    @Override
+    public void handle(CommandException exception, CommandSender sender) {
+        sender.sendMessage(String.format("%s §r§c%s", PREFIX, exception.getMessage()));
+    }
+
+    /**
+     * Executes the given command, returning its success.
+     * <br>
+     * If false is returned, then the "usage" plugin.yml entry for this command (if defined) will be sent to the
+     * player.
+     *
+     * @param sender
+     *         Source of the command
+     * @param command
+     *         Command which was executed
+     * @param label
+     *         Alias of the command which was used
+     * @param args
+     *         Passed command arguments
+     *
+     * @return true if a valid command, otherwise false
+     */
+    @Override
+    public final boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+
+        try {
+            IMatchingResult<Method> matchingResult = this.getMatch(args);
+            Method                  exec           = matchingResult.getIdentifier();
+            Runnable                runnable       = exec.getAnnotation(Runnable.class);
+            PluginCommandImpl.validateExecutableStatus(sender, runnable);
+            List<Object> parameters = PluginCommandImpl.generateParameterList(matchingResult, exec, sender);
+            this.call(exec, parameters);
+        } catch (CommandException e) {
+            Bukkit.getLogger().severe(String
+                    .format("[LeafCore] An error occurred while handling the '%s' command: %s", label, e.getMessage()));
+            this.handle(e, sender);
+        }
+        return true;
+    }
+
+    /**
+     * Requests a list of possible completions for a command argument.
+     *
+     * @param sender
+     *         Source of the command.  For players tab-completing a command inside of a command block, this will be the
+     *         player, not the command block.
+     * @param command
+     *         Command which was executed
+     * @param alias
+     *         The alias used
+     * @param args
+     *         The arguments passed to the command, including final partial argument to be completed and command label
+     *
+     * @return A List of possible completions for the final argument, or null to default to the command executor
+     */
+    @Override
+    public final @NotNull List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
+        return this.getCompletionService().complete(String.join(" ", args));
+    }
+
+    private void readCommandData() {
+        for (Method declaredMethod : this.getClass().getDeclaredMethods()) {
+            if (declaredMethod.getAnnotation(Runnable.class) != null) {
+                Runnable r = declaredMethod.getAnnotation(Runnable.class);
+                List<String> args = Arrays.asList(r.value().split(" "));
+                SyntaxContainer container = this.core.createContainer(args);
+                this.commandMap.put(declaredMethod, container);
+            }
+        }
+    }
+
+    @Override
+    public final void register(String name) {
+        PluginCommand command = Bukkit.getPluginCommand(name);
+        if (command != null) {
+            command.setExecutor(this);
+            command.setTabCompleter(this);
         }
     }
 

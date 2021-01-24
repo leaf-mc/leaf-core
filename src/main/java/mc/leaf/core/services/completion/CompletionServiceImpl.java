@@ -1,11 +1,14 @@
 package mc.leaf.core.services.completion;
 
+import mc.leaf.core.services.completion.enums.FilterMode;
 import mc.leaf.core.services.completion.exceptions.CompletionException;
 import mc.leaf.core.services.completion.interfaces.ICompletionService;
 import mc.leaf.core.services.completion.interfaces.IMatchingResult;
+import mc.leaf.core.services.completion.interfaces.ISyntax;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
@@ -18,38 +21,20 @@ import java.util.stream.Collectors;
  */
 public class CompletionServiceImpl<T> implements ICompletionService<T> {
 
-    private final Map<T, List<String>>      identifiersSyntax;
-    private final Map<String, List<String>> dynamicOptions;
 
-    /**
-     * Create a new {@link CompletionServiceImpl}.
-     *
-     * @param identifiersSyntax
-     *         A {@link Map} linking each {@link T} to a {@link List} of {@link String}
-     */
-    public CompletionServiceImpl(@NotNull Map<T, List<String>> identifiersSyntax) {
-        this.identifiersSyntax = identifiersSyntax;
-        this.dynamicOptions    = new HashMap<>();
-    }
+    private final Map<T, SyntaxContainer>     identifiersSyntax;
 
-    /**
-     * Create a new {@link CompletionServiceImpl}.
-     *
-     * @param identifiersSyntax
-     *         A {@link Map} linking each {@link T} to a {@link List} of {@link String}
-     * @param dynamicOptions
-     *         A {@link Map} linking each dynamic argument name to its {@link List} of values.
-     */
-    public CompletionServiceImpl(@NotNull Map<T, List<String>> identifiersSyntax, @NotNull Map<String, List<String>> dynamicOptions) {
+
+    public CompletionServiceImpl(Map<T, SyntaxContainer> identifiersSyntax) {
+
         this.identifiersSyntax = identifiersSyntax;
-        this.dynamicOptions    = dynamicOptions;
     }
 
     /**
      * Generate a {@link List} of {@link String} based on the provided user's input for handling completion.
      *
      * @param userInput
-     *         The actual user's input to complete.
+     *         The actual user's input-- to complete.
      *
      * @return A {@link List} of {@link String}
      */
@@ -65,174 +50,50 @@ public class CompletionServiceImpl<T> implements ICompletionService<T> {
         return input;
     }
 
-    /**
-     * Retrieve the {@link List} of {@link String} containing the syntax parameters of the provided completion
-     * identifier {@link T}.
-     *
-     * @param identifier
-     *         The completion identifier {@link T} from which the {@link List} should be retrieved.
-     *
-     * @return A {@link List} of {@link String}
-     */
+
     @Override
-    public final @NotNull List<String> getIdentifierSyntax(@NotNull T identifier) {
-        if (this.identifiersSyntax.containsKey(identifier)) {
-            return this.identifiersSyntax.get(identifier);
-        }
-        throw new IllegalArgumentException("This identifier isn't registered in this completion service.");
+    public @NotNull List<String> complete(@NotNull String input) {
+
+        List<String> data = CompletionServiceImpl.prepareUserInput(input);
+
+        return new ArrayList<>(new HashSet<>(this.identifiersSyntax.keySet().stream()
+                .map(this.identifiersSyntax::get)
+                .filter(container -> container.isCompletable(data))
+                .map(SyntaxContainer::getCompletion)
+                .flatMap(List::stream)
+                .collect(Collectors.toList())));
     }
 
-    /**
-     * Retrieve the syntax at the provided index for the provided completion identifier {@link T}.
-     *
-     * @param identifier
-     *         The completion identifier {@link T} from which the syntax parameter will be retrieved.
-     * @param index
-     *         The index that will be used to retrieve the syntax parameter from the identifier syntax {@link List}.
-     *
-     * @return A syntax parameter.
-     */
-    @Override
-    public final @NotNull String getIdentifierSyntaxAt(@NotNull T identifier, int index) {
-        return this.getIdentifierSyntax(identifier).get(index);
-    }
+    private IMatchingResult<T> create(T identifier, SyntaxContainer container) {
+        return new IMatchingResult<>() {
 
-    /**
-     * Filter the {@link List} of completion identifier matching the provided {@link List} of {@link String}
-     * corresponding to the user's input ruled by the provided {@link FilterMode} using {@link
-     * FilterMode#isMatching(String, String)}
-     *
-     * @param input
-     *         The {@link List} of {@link String} corresponding to the user's input.
-     * @param filterMode
-     *         The {@link FilterMode} to use to rule the matching with the user's input.
-     *
-     * @return A {@link List} of completion identifier {@link T}.
-     */
-    @Override
-    public final @NotNull List<T> filterIdentifier(@NotNull List<String> input, @NotNull FilterMode filterMode) {
-        return this.identifiersSyntax.keySet().stream()
-                .filter(identifier -> {
-                    int sizeA = this.getIdentifierSyntax(identifier).size();
-                    int sizeB = input.size();
-                    if (filterMode == FilterMode.STRICT) {
-                        return sizeA == sizeB;
-                    } else {
-                        return sizeA >= sizeB;
-                    }
-                })
-                .collect(Collectors.toList());
-    }
+            /**
+             * Get the completion identifier {@link T} resulting of this {@link
+             * IMatchingResult}.
+             *
+             * @return A completion identifier {@link T}
+             */
+            @NotNull
+            @Override
+            public T getIdentifier() {
 
-    /**
-     * Filter the {@link List} of completion identifier {@link T} matching the provided {@link List} of {@link String}
-     * corresponding to the user's input. If possible, this method should only call {@link #filterIdentifier(List,
-     * FilterMode)} with the filter mode being set to {@link FilterMode#STARTING_WITH}.
-     *
-     * @param input
-     *         The {@link List} of {@link String} corresponding to the user's input.
-     *
-     * @return A {@link List} of completion identifier {@link T}.
-     */
-    @Override
-    public final @NotNull List<T> filterPotentialIdentifiers(@NotNull List<String> input) {
-        return this.filterIdentifier(input, FilterMode.STARTING_WITH);
-    }
-
-    /**
-     * Filter the {@link List} of completion identifier {@link T} matching the provided {@link List} of {@link String}
-     * corresponding to the user's input. If possible, this method should only call {@link #filterIdentifier(List,
-     * FilterMode)} with the filter mode being set to {@link FilterMode#STRICT}.
-     *
-     * @param input
-     *         The {@link List} of {@link String} corresponding to the user's input.
-     *
-     * @return A {@link List} of completion identifier {@link T}.
-     */
-    @Override
-    public final @NotNull List<T> filterMatchingIdentifiers(@NotNull List<String> input) {
-        return this.filterIdentifier(input, FilterMode.STRICT);
-    }
-
-    /**
-     * Retrieve a {@link List} of {@link String} corresponding to the provided syntax. In most cases, this will just be
-     * a {@link List} with only one item: the syntax itself.
-     *
-     * This can be use to create dynamic completion where one argument in the completion need to be a {@link List} of
-     * {@link String} that can mutate over time (eg. A user list). The generation of this {@link List} needs to be done
-     * by the implementing class, as this interface does only provide simple completion methods.
-     *
-     * If dynamic completion is used, you may use this in the {@link #isOptionMatching(String, String, FilterMode)}
-     * method.
-     *
-     * @param syntax
-     *         The syntax {@link String} to resolve.
-     *
-     * @return A {@link String} of {@link String}
-     */
-    @Override
-    public final @NotNull List<String> resolveSyntax(@NotNull String syntax) {
-        if (syntax.startsWith("{") && syntax.endsWith("}")) {
-            String name = syntax.substring(1, syntax.length() - 1);
-
-            if (!this.dynamicOptions.containsKey(name)) {
-                throw new CompletionException("The dynamic argument `" + name + "` isn't registered.");
+                return identifier;
             }
-            return this.dynamicOptions.get(name);
-        } else if (syntax.startsWith("[") && syntax.endsWith("]")) {
-            return Collections.emptyList();
-        } else {
-            return Collections.singletonList(syntax);
-        }
-    }
 
-    /**
-     * Check if the provided syntax and input match using the matching rule of the provided {@link FilterMode}. This
-     * method should use the {@link #resolveSyntax(String)} method on the first argument to be able to implement easily
-     * any syntax mutation needed.
-     *
-     * @param syntax
-     *         The syntax to match
-     * @param input
-     *         The user's input option to match
-     * @param filterMode
-     *         The {@link FilterMode} to use to rule the matching between the syntax and the input.
-     *
-     * @return True if they match, false instead.
-     */
-    @Override
-    public final boolean isOptionMatching(@NotNull String syntax, @NotNull String input, @NotNull FilterMode filterMode) {
-        List<String> options = this.resolveSyntax(syntax);
-        if (options.isEmpty()) {
-            // Named pass-through syntax
-            return true;
-        }
-        return options.stream().anyMatch(option -> filterMode.isMatching(option, input));
-    }
+            /**
+             * Retrieve the value of the provided dynamic completion argument.
+             *
+             * @param name
+             *         Name of the dynamic completion argument.
+             *
+             * @return A {@link String}
+             */
+            @Override
+            public String getParameter(String name) {
 
-    /**
-     * Retrieve a {@link List} of {@link String} completing the user's input.
-     *
-     * @param userInput
-     *         The user's input to complete.
-     *
-     * @return A {@link List} of {@link String}
-     */
-    @Override
-    public final @NotNull List<String> complete(@NotNull String userInput) {
-        List<T>      identifiers;
-        List<String> input = CompletionServiceImpl.prepareUserInput(userInput);
-
-        identifiers = this.filterPotentialIdentifiers(input);
-        identifiers = this.filterByUserInput(identifiers, input, FilterMode.STARTING_WITH);
-
-        List<String> results = this.collectCompletion(identifiers, input);
-        // Anti-duplication thing
-        results = new ArrayList<>(new HashSet<>(results));
-        // Sorting the list
-        results.sort(String::compareTo);
-
-        return results;
+                return container.getMatches().get(name);
+            }
+        };
     }
 
     /**
@@ -245,73 +106,36 @@ public class CompletionServiceImpl<T> implements ICompletionService<T> {
      * @return An {@link Optional} {@link IMatchingResult}
      */
     @Override
-    public final Optional<IMatchingResult<T>> getMatchingIdentifier(@NotNull String userInput) {
-        List<T>      identifiers;
-        List<String> input = CompletionServiceImpl.prepareUserInput(userInput);
+    public Optional<IMatchingResult<T>> getMatchingIdentifier(@NotNull String userInput) {
 
-        identifiers = this.filterMatchingIdentifiers(input);
-        identifiers = this.filterByUserInput(identifiers, input, FilterMode.STRICT);
+        List<String> data = CompletionServiceImpl.prepareUserInput(userInput);
 
-        if (identifiers.size() != 1) {
+        List<T> identifiers = this.identifiersSyntax.keySet()
+                .stream().filter(key -> this.identifiersSyntax.get(key).isMatching(data)).collect(Collectors.toList());
+
+        if (identifiers.isEmpty()) {
             return Optional.empty();
         }
 
-        T identifier = identifiers.get(0);
-
-        // Let's build the parameter map !
-        Map<String, String> matchingParameter = new HashMap<>();
-        List<String>        identifierSyntax  = this.getIdentifierSyntax(identifier);
-
-        for (int i = 0; i < identifierSyntax.size(); i++) {
-            String syntax = identifierSyntax.get(i);
-            if ((syntax.startsWith("{") && syntax.endsWith("}")) || syntax.startsWith("[") && syntax.endsWith("]")) {
-                String name = syntax.substring(1, syntax.length() - 1);
-                matchingParameter.put(name, input.get(i));
-            }
+        if (identifiers.size() == 1) {
+            T identifier = identifiers.get(0);
+            SyntaxContainer container = this.identifiersSyntax.get(identifier);
+            return Optional.of(this.create(identifier, container));
         }
 
-        // And return the result !
-        return Optional.of(new IMatchingResult<T>() {
-            @NotNull
-            @Override
-            public T getIdentifier() {
-                return identifier;
-            }
+        identifiers.sort(Comparator.comparing(this.identifiersSyntax::get));
 
-            @Override
-            public String getParameter(String name) {
-                return matchingParameter.get(name);
-            }
-        });
-    }
+        T idA = identifiers.get(0);
+        T idB = identifiers.get(1);
 
-    private List<T> filterByUserInput(List<T> identifiers, List<String> input, FilterMode filterMode) {
-        List<T> ts = identifiers;
+        SyntaxContainer cA = this.identifiersSyntax.get(idA);
+        SyntaxContainer cB = this.identifiersSyntax.get(idB);
 
-        for (int i = 0; i < input.size(); i++) {
-            String inputOption = input.get(i);
-            // Come on Java, this is so dumb.
-            final int finalI = i;
-
-            ts = ts.stream()
-                    .filter(identifier -> this.isOptionMatching(
-                            this.getIdentifierSyntaxAt(identifier, finalI),
-                            inputOption,
-                            // We need to enforce strict mode if its not the last argument.
-                            finalI == input.size() - 1 ? filterMode : FilterMode.STRICT
-                    ))
-                    .collect(Collectors.toList());
+        if (cA.getPriority() == cB.getPriority()) {
+            return Optional.empty();
+        } else {
+            return Optional.of(this.create(idA, cA));
         }
-        return ts;
-    }
-
-    private List<String> collectCompletion(List<T> identifiers, List<String> input) {
-        return identifiers.stream()
-                .map(identifier -> this
-                        .getIdentifierSyntaxAt(identifier, input.size() - 1))
-                .flatMap(syntax -> this.resolveSyntax(syntax).stream())
-                .filter(option -> FilterMode.STARTING_WITH.isMatching(option, input.get(input.size() - 1)))
-                .collect(Collectors.toList());
     }
 
 }

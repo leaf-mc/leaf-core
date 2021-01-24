@@ -1,27 +1,21 @@
 package mc.leaf.core.interfaces;
 
 import mc.leaf.core.events.interfaces.IEventBridge;
+import mc.leaf.core.services.completion.SyntaxContainer;
 
 import java.util.List;
-import java.util.Map;
 
 public interface ILeafCore {
 
     /**
-     * Register a new dynamic option for command completion. If the name provided have already been registered, the
-     * list of options will be replaced.
+     * Create a {@link SyntaxContainer} for the provided {@link List} of {@link String}
      *
-     * @param name The name of the dynamic option
-     * @param options
-     */
-    void registerDynamicOptions(String name, List<String> options);
-
-    /**
-     * Retrieve every dynamic options registered.
+     * @param items
+     *         The {@link List} to convert.
      *
-     * @return A list of dynamic options for command completion.
+     * @return A {@link SyntaxContainer}.
      */
-    Map<String, List<String>> getDynamicOptions();
+    SyntaxContainer createContainer(List<String> items);
 
     /**
      * Retrieve an implementation instance of {@link IEventBridge}.
@@ -29,5 +23,15 @@ public interface ILeafCore {
      * @return An instance implementing {@link IEventBridge}.
      */
     IEventBridge getEventBridge();
+
+    /**
+     * Register a new dynamic option for command completion. If the name provided have already been registered, the list
+     * of options will be replaced.
+     *
+     * @param name
+     *         The name of the dynamic option
+     * @param options
+     */
+    void registerDynamicOptions(String name, List<String> options);
 
 }
