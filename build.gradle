@@ -29,6 +29,11 @@ compileJava {
     options.compilerArgs << '-parameters'
 }
 
+jar {
+    destinationDirectory = file("build/plugin")
+    archiveFileName = pluginName + ".jar"
+}
+
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
     compileOnly 'io.papermc.paper:paper-api:1.18.1-R0.1-SNAPSHOT'
