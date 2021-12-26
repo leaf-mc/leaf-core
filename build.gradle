@@ -3,8 +3,8 @@ apply plugin: 'java'
 group = pluginGroup
 version = pluginVersion
 
-sourceCompatibility = '1.11'
-targetCompatibility = '1.11'
+sourceCompatibility = '1.17'
+targetCompatibility = '1.17'
 
 /**
  * 1st approach: Setting encoding during compilation in Java and Test classes
@@ -25,17 +25,22 @@ repositories {
     }
 }
 
+compileJava {
+    options.compilerArgs << '-parameters'
+}
+
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.7.0-M1'
-    compileOnly 'com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+    compileOnly 'io.papermc.paper:paper-api:1.18.1-R0.1-SNAPSHOT'
 
     // https://mvnrepository.com/artifact/org.jetbrains/annotations
-    implementation group: 'org.jetbrains', name: 'annotations', version: '19.0.0'
+    implementation group: 'org.jetbrains', name: 'annotations', version: '22.0.0'
 }
 
 import org.apache.tools.ant.filters.ReplaceTokens
 
 processResources {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
     from(sourceSets.main.resources.srcDirs) {
         filter ReplaceTokens, tokens: [version: version]
     }
@@ -43,16 +48,4 @@ processResources {
 
 test {
     useJUnitPlatform()
-}
-
-tasks.withType(org.gradle.jvm.tasks.Jar) {
-
-    if (project.hasProperty('destinationPath')) {
-        destinationDirectory = file(project.property('destinationPath'))
-    }
-
-    if (project.hasProperty('destinationName')) {
-        archiveFileName = project.property('destinationName') + '.jar'
-    }
-
 }
