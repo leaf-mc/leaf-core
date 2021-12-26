@@ -3,32 +3,31 @@ package mc.leaf.core.api.command;
 import mc.leaf.core.api.command.annotations.Param;
 import mc.leaf.core.api.command.annotations.Runnable;
 import mc.leaf.core.api.command.annotations.Sender;
-import mc.leaf.core.api.command.exceptions.*;
 import mc.leaf.core.api.command.exceptions.CommandException;
+import mc.leaf.core.api.command.exceptions.*;
 import mc.leaf.core.api.command.interfaces.IParameterConverter;
 import mc.leaf.core.api.command.interfaces.IPluginCommand;
 import mc.leaf.core.interfaces.ILeafCore;
 import mc.leaf.core.services.completion.CompletionServiceImpl;
 import mc.leaf.core.services.completion.SyntaxContainer;
-import mc.leaf.core.services.completion.impl.MatchSyntax;
-import mc.leaf.core.services.completion.impl.PassThroughSyntax;
-import mc.leaf.core.services.completion.impl.SelectiveSyntax;
 import mc.leaf.core.services.completion.interfaces.ICompletionService;
 import mc.leaf.core.services.completion.interfaces.IMatchingResult;
-import mc.leaf.core.services.completion.interfaces.ISyntax;
 import org.bukkit.Bukkit;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 public class PluginCommandImpl implements IPluginCommand {
 
-    private static final String PREFIX   = "§l[§aLeaf§bCore§r§l]";
-    private static final String PREFIX_C = "[§aLeaf§bCore§r]";
+    public static final String PREFIX = "§l[§aLeaf§bCore§r§l]§r";
 
     private final ILeafCore                core;
     private final HashMap<Method, SyntaxContainer> commandMap = new HashMap<>();
@@ -73,14 +72,16 @@ public class PluginCommandImpl implements IPluginCommand {
 
                 methodParameters.add(sender);
             } else if (parameter.isAnnotationPresent(Param.class)) {
-                Param param = parameter.getAnnotation(Param.class);
+                Param  param = parameter.getAnnotation(Param.class);
+                String name  = param.value().isEmpty() ? parameter.getName() : param.value();
 
                 Class<? extends IParameterConverter<String, ?>> converter = param.converter();
                 try {
-                    IParameterConverter<String, ?> pConverter = converter.newInstance();
-                    methodParameters.add(pConverter.convert(matchingResult.getParameter(parameter.getName())));
+                    Constructor<? extends IParameterConverter<String, ?>> constructor = converter.getConstructor();
+                    IParameterConverter<String, ?>                        pConverter  = constructor.newInstance();
+                    methodParameters.add(pConverter.convert(matchingResult.getParameter(name)));
                 } catch (Exception e) {
-                    throw new ConfigurationException(String.format("The `%s` is wrongly configured: Unable to create or use the provided converter.", parameter.getName()));
+                    throw new ConfigurationException(String.format("The `%s` parameter is wrongly configured: Unable to create or use the provided converter.", name));
                 }
             }
         }
@@ -113,7 +114,8 @@ public class PluginCommandImpl implements IPluginCommand {
 
     @Override
     public void handle(CommandException exception, CommandSender sender) {
-        sender.sendMessage(String.format("%s §r§c%s", PREFIX, exception.getMessage()));
+
+        sender.sendMessage(String.format("%s §c%s", PREFIX, exception.getMessage()));
     }
 
     /**

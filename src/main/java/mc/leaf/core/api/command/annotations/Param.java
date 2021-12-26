@@ -15,8 +15,10 @@ import java.lang.annotation.Target;
  * @author alexpado
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
+@Target(ElementType.PARAMETER)
 public @interface Param {
+
+    String value() default "";
 
     Class<? extends IParameterConverter<String, ?>> converter() default PassThroughConverter.class;
 

@@ -31,7 +31,15 @@ public interface ILeafCore {
      * @param name
      *         The name of the dynamic option
      * @param options
+     *         List of completions available for this option.
      */
     void registerDynamicOptions(String name, List<String> options);
+
+    /**
+     * Retrieve all {@link ILeafModule} registered (enabled & disabled).
+     *
+     * @return All registered {@link ILeafModule}
+     */
+    List<ILeafModule> getLeafModules();
 
 }
