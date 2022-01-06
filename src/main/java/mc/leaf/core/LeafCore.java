@@ -5,6 +5,7 @@ import mc.leaf.core.events.interfaces.IEventBridge;
 import mc.leaf.core.interfaces.ILeafCore;
 import mc.leaf.core.interfaces.ILeafModule;
 import mc.leaf.core.internal.LeafCommand;
+import mc.leaf.core.internal.LeafInternalListener;
 import mc.leaf.core.services.completion.SyntaxContainer;
 import mc.leaf.core.services.completion.interfaces.ISyntax;
 import org.bukkit.Bukkit;
@@ -63,7 +64,9 @@ public final class LeafCore extends JavaPlugin implements ILeafCore {
         this.bridge         = new EventBridge();
 
         new LeafCommand(this).register("leaf");
+
         Bukkit.getPluginManager().registerEvents(this.bridge, this);
+        Bukkit.getPluginManager().registerEvents(new LeafInternalListener(this), this);
 
         this.registerDynamicOptions("player", Bukkit.getOnlinePlayers().stream().map(Player::getName).toList());
         this.registerDynamicOptions("actionState", Arrays.asList("enable", "disable"));
@@ -100,6 +103,17 @@ public final class LeafCore extends JavaPlugin implements ILeafCore {
 
         this.modules.add(module);
         this.registerDynamicOptions("modules", this.modules.stream().map(ILeafModule::getName).toList());
+    }
+
+    /**
+     * Retrieve this {@link ILeafCore} in its {@link JavaPlugin} instance.
+     *
+     * @return A {@link JavaPlugin}
+     */
+    @Override
+    public JavaPlugin asPlugin() {
+
+        return this;
     }
 
 }

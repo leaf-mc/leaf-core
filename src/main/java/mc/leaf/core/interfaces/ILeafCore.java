@@ -2,7 +2,7 @@ package mc.leaf.core.interfaces;
 
 import mc.leaf.core.events.interfaces.IEventBridge;
 import mc.leaf.core.services.completion.SyntaxContainer;
-import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
 
@@ -51,6 +51,11 @@ public interface ILeafCore {
      */
     void registerModule(ILeafModule module);
 
-    PluginDescriptionFile getDescription();
+    /**
+     * Retrieve this {@link ILeafCore} in its {@link JavaPlugin} instance.
+     *
+     * @return A {@link JavaPlugin}
+     */
+    JavaPlugin asPlugin();
 
 }

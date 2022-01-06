@@ -20,7 +20,6 @@ import java.util.Optional;
 
 public class LeafCommand extends PluginCommandImpl {
 
-
     public LeafCommand(ILeafCore core) {
 
         super(core);
@@ -30,7 +29,7 @@ public class LeafCommand extends PluginCommandImpl {
     public void noArgs(@Sender CommandSender sender) {
 
         sender.sendMessage(String.format("%s Plugin version %s", PluginCommandImpl.PREFIX, this.getCore()
-                .getDescription().getVersion()));
+                .asPlugin().getDescription().getVersion()));
 
     }
 

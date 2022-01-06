@@ -1,7 +1,7 @@
 package mc.leaf.core.internal;
 
-import mc.leaf.core.LeafCore;
 import mc.leaf.core.events.LeafListener;
+import mc.leaf.core.interfaces.ILeafCore;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -12,9 +12,9 @@ import java.util.List;
 
 public class LeafInternalListener extends LeafListener {
 
-    private final LeafCore core;
+    private final ILeafCore core;
 
-    public LeafInternalListener(LeafCore core) {
+    public LeafInternalListener(ILeafCore core) {
 
         this.core = core;
     }
