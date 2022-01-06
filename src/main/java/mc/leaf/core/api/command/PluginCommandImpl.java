@@ -29,15 +29,16 @@ public class PluginCommandImpl implements IPluginCommand {
 
     public static final String PREFIX = "§l[§aLeaf§bCore§r§l]§r";
 
-    private final ILeafCore                core;
+    private final ILeafCore                        core;
     private final HashMap<Method, SyntaxContainer> commandMap = new HashMap<>();
 
     protected PluginCommandImpl(ILeafCore core) {
+
         this.core = core;
-        this.readCommandData();
     }
 
     private static void validateExecutableStatus(CommandSender sender, Runnable runnable) {
+
         if (sender instanceof ConsoleCommandSender && !runnable.allowConsole()) {
             throw new IllegalCommandSenderException("Running this command as console isn't supported.");
         } else if (sender instanceof BlockCommandSender && !runnable.allowCommandBlock()) {
@@ -53,7 +54,8 @@ public class PluginCommandImpl implements IPluginCommand {
     }
 
     private static List<Object> generateParameterList(IMatchingResult<Method> matchingResult, Method method, CommandSender sender) {
-        Runnable     runnable              = method.getAnnotation(Runnable.class);
+
+        Runnable     runnable         = method.getAnnotation(Runnable.class);
         List<Object> methodParameters = new ArrayList<>();
 
         List<Class<?>> consoleClasses = Arrays.asList(CommandSender.class, ConsoleCommandSender.class);
@@ -90,6 +92,7 @@ public class PluginCommandImpl implements IPluginCommand {
     }
 
     private void call(Method method, List<Object> values) {
+
         try {
             method.invoke(this, values.toArray());
         } catch (Exception e) {
@@ -99,15 +102,18 @@ public class PluginCommandImpl implements IPluginCommand {
 
     @Override
     public final ICompletionService<Method> getCompletionService() {
+
         return new CompletionServiceImpl<>(this.commandMap);
     }
 
     @Override
     public final ILeafCore getCore() {
+
         return this.core;
     }
 
     private IMatchingResult<Method> getMatch(String... args) {
+
         return this.getCompletionService().getMatchingIdentifier(String.join(" ", args))
                 .orElseThrow(() -> new SyntaxException("Command not found. Please check your syntax."));
     }
@@ -139,6 +145,7 @@ public class PluginCommandImpl implements IPluginCommand {
     public final boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
         try {
+            this.readCommandData();
             IMatchingResult<Method> matchingResult = this.getMatch(args);
             Method                  exec           = matchingResult.getIdentifier();
             Runnable                runnable       = exec.getAnnotation(Runnable.class);
@@ -170,14 +177,18 @@ public class PluginCommandImpl implements IPluginCommand {
      */
     @Override
     public final @NotNull List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
+
+        this.readCommandData();
         return this.getCompletionService().complete(String.join(" ", args));
     }
 
     private void readCommandData() {
+
+        this.commandMap.clear();
         for (Method declaredMethod : this.getClass().getDeclaredMethods()) {
             if (declaredMethod.getAnnotation(Runnable.class) != null) {
-                Runnable r = declaredMethod.getAnnotation(Runnable.class);
-                List<String> args = Arrays.asList(r.value().split(" "));
+                Runnable        r         = declaredMethod.getAnnotation(Runnable.class);
+                List<String>    args      = Arrays.asList(r.value().split(" "));
                 SyntaxContainer container = this.core.createContainer(args);
                 this.commandMap.put(declaredMethod, container);
             }
@@ -186,6 +197,7 @@ public class PluginCommandImpl implements IPluginCommand {
 
     @Override
     public final void register(String name) {
+
         PluginCommand command = Bukkit.getPluginCommand(name);
         if (command != null) {
             command.setExecutor(this);

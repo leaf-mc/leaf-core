@@ -1,5 +1,5 @@
 name: LeafCore
-version: @version@
+version: '${version}'
 main: mc.leaf.core.LeafCore
 api-version: 1.13
 prefix: Leaf

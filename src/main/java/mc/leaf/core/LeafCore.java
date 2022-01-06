@@ -7,12 +7,12 @@ import mc.leaf.core.interfaces.ILeafModule;
 import mc.leaf.core.internal.LeafCommand;
 import mc.leaf.core.services.completion.SyntaxContainer;
 import mc.leaf.core.services.completion.interfaces.ISyntax;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public final class LeafCore extends JavaPlugin implements ILeafCore {
@@ -50,6 +50,7 @@ public final class LeafCore extends JavaPlugin implements ILeafCore {
     @Override
     public void onDisable() {
 
+        LeafCore.this.modules.forEach(ILeafModule::onDisable);
         this.dynamicOptions = null;
         this.bridge         = null;
         this.modules.clear();
@@ -62,6 +63,24 @@ public final class LeafCore extends JavaPlugin implements ILeafCore {
         this.bridge         = new EventBridge();
 
         new LeafCommand(this).register("leaf");
+        Bukkit.getPluginManager().registerEvents(this.bridge, this);
+
+        this.registerDynamicOptions("player", Bukkit.getOnlinePlayers().stream().map(Player::getName).toList());
+        this.registerDynamicOptions("actionState", Arrays.asList("enable", "disable"));
+        this.registerDynamicOptions("newState", Arrays.asList("enabled", "disabled"));
+        this.registerDynamicOptions("booleanState", Arrays.asList("true", "false"));
+        this.registerDynamicOptions("namedState", Arrays.asList("on", "off"));
+        this.registerDynamicOptions("numState", Arrays.asList("1", "0"));
+
+        BukkitRunnable runnable = new BukkitRunnable() {
+
+            @Override
+            public void run() {
+
+                LeafCore.this.modules.forEach(ILeafModule::onEnable);
+            }
+        };
+        runnable.runTaskLater(this, 1L);
     }
 
     @Override
@@ -74,6 +93,13 @@ public final class LeafCore extends JavaPlugin implements ILeafCore {
     public List<ILeafModule> getLeafModules() {
 
         return this.modules;
+    }
+
+    @Override
+    public void registerModule(ILeafModule module) {
+
+        this.modules.add(module);
+        this.registerDynamicOptions("modules", this.modules.stream().map(ILeafModule::getName).toList());
     }
 
 }

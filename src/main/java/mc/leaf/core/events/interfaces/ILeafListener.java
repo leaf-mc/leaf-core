@@ -1,27 +1,50 @@
 package mc.leaf.core.events.interfaces;
 
+import com.destroystokyo.paper.event.block.AnvilDamagedEvent;
+import com.destroystokyo.paper.event.block.BeaconEffectEvent;
+import com.destroystokyo.paper.event.block.BlockDestroyEvent;
+import com.destroystokyo.paper.event.block.TNTPrimeEvent;
+import com.destroystokyo.paper.event.entity.*;
+import com.destroystokyo.paper.event.inventory.PrepareResultEvent;
+import com.destroystokyo.paper.event.player.*;
+import com.destroystokyo.paper.event.profile.*;
+import com.destroystokyo.paper.event.server.*;
+import io.papermc.paper.event.block.*;
+import io.papermc.paper.event.entity.*;
+import io.papermc.paper.event.packet.PlayerChunkLoadEvent;
+import io.papermc.paper.event.packet.PlayerChunkUnloadEvent;
+import io.papermc.paper.event.player.*;
+import io.papermc.paper.event.server.ServerResourcesReloadedEvent;
+import io.papermc.paper.event.world.StructureLocateEvent;
+import io.papermc.paper.event.world.WorldGameRuleChangeEvent;
+import io.papermc.paper.event.world.border.WorldBorderBoundsChangeEvent;
+import io.papermc.paper.event.world.border.WorldBorderBoundsChangeFinishEvent;
+import io.papermc.paper.event.world.border.WorldBorderCenterChangeEvent;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
+import org.bukkit.event.command.UnknownCommandEvent;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
-import org.bukkit.event.hanging.HangingEvent;
 import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.inventory.*;
+import org.bukkit.event.player.PlayerLocaleChangeEvent;
 import org.bukkit.event.player.*;
-import org.bukkit.event.raid.*;
+import org.bukkit.event.raid.RaidFinishEvent;
+import org.bukkit.event.raid.RaidSpawnWaveEvent;
+import org.bukkit.event.raid.RaidStopEvent;
+import org.bukkit.event.raid.RaidTriggerEvent;
 import org.bukkit.event.server.*;
 import org.bukkit.event.vehicle.*;
 import org.bukkit.event.weather.LightningStrikeEvent;
 import org.bukkit.event.weather.ThunderChangeEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
-import org.bukkit.event.weather.WeatherEvent;
 import org.bukkit.event.world.*;
 
 /**
- * Interface providing every listener available on minecraft. You may extends {@link mc.leaf.core.events.LeafListener}
+ * Interface providing every listener available on minecraft. You may extend {@link mc.leaf.core.events.LeafListener}
  * instead of implementing this.
  *
  * @author alexpado
@@ -29,16 +52,238 @@ import org.bukkit.event.world.*;
 @SuppressWarnings("ClassWithTooManyMethods")
 public interface ILeafListener extends Listener {
 
-    void onAreaEffectCloudApply(AreaEffectCloudApplyEvent event);
+    // <editor-fold desc="Paper Events">
+    // <editor-fold desc="block">
+    void onAnvilDamaged(AnvilDamagedEvent event);
 
-    void onAsyncPlayerChat(AsyncPlayerChatEvent event);
+    void onBeaconEffect(BeaconEffectEvent event);
 
-    void onAsyncPlayerPreLogin(AsyncPlayerPreLoginEvent event);
+    void onBlockDestroy(BlockDestroyEvent event);
 
-    void onBatToggleSleep(BatToggleSleepEvent event);
+    void onTNTPrime(TNTPrimeEvent event);
 
-    void onBlock(BlockEvent event);
+    void onBeaconActivated(BeaconActivatedEvent event);
 
+    void onBeaconDeactivated(BeaconDeactivatedEvent event);
+
+    void onBellRevealRaider(BellRevealRaiderEvent event);
+
+    void onBellRing(BellRingEvent event);
+
+    void onBlockBreakBlock(BlockBreakBlockEvent event);
+
+    void onBlockFailedDispense(BlockFailedDispenseEvent event);
+
+    void onBlockPreDispense(BlockPreDispenseEvent event);
+
+    void onDragonEggForm(DragonEggFormEvent event);
+
+    void onPlayerShearBlock(PlayerShearBlockEvent event);
+
+    void onTargetHit(TargetHitEvent event);
+
+    // </editor-fold>
+    // <editor-fold desc="entity">
+    void onCreeperIgnite(CreeperIgniteEvent event);
+
+    void onEnderDragonFireballHit(EnderDragonFireballHitEvent event);
+
+    void onEnderDragonFlame(EnderDragonFlameEvent event);
+
+    void onEnderDragonShootFireball(EnderDragonShootFireballEvent event);
+
+    void onEndermanAttackPlayer(EndermanAttackPlayerEvent event);
+
+    void onEndermanEscape(EndermanEscapeEvent event);
+
+    void onEntityAddToWorld(EntityAddToWorldEvent event);
+
+    void onEntityJump(EntityJumpEvent event);
+
+    void onEntityKnockbackByEntity(EntityKnockbackByEntityEvent event);
+
+    void onEntityPathfind(EntityPathfindEvent event);
+
+    void onEntityRemoveFromWorld(EntityRemoveFromWorldEvent event);
+
+    void onEntityTeleportEndGateway(EntityTeleportEndGatewayEvent event);
+
+    void onEntityZap(EntityZapEvent event);
+
+    void onExperienceOrbMerge(ExperienceOrbMergeEvent event);
+
+    void onPhantomPreSpawn(PhantomPreSpawnEvent event);
+
+    void onPlayerNaturallySpawnCreatures(PlayerNaturallySpawnCreaturesEvent event);
+
+    void onPreCreatureSpawn(PreCreatureSpawnEvent event);
+
+    void onPreSpawnerSpawn(PreSpawnerSpawnEvent event);
+
+    void onProjectileCollide(ProjectileCollideEvent event);
+
+    void onSkeletonHorseTrap(SkeletonHorseTrapEvent event);
+
+    void onSlimeChangeDirection(SlimeChangeDirectionEvent event);
+
+    void onSlimePathfind(SlimePathfindEvent event);
+
+    void onSlimeSwim(SlimeSwimEvent event);
+
+    void onSlimeTargetLivingEntity(SlimeTargetLivingEntityEvent event);
+
+    void onSlimeWander(SlimeWanderEvent event);
+
+    void onThrownEggHatch(ThrownEggHatchEvent event);
+
+    void onTurtleGoHome(TurtleGoHomeEvent event);
+
+    void onTurtleLayEgg(TurtleLayEggEvent event);
+
+    void onTurtleStartDigging(TurtleStartDiggingEvent event);
+
+    void onWitchConsumePotion(WitchConsumePotionEvent event);
+
+    void onWitchReadyPotion(WitchReadyPotionEvent event);
+
+    void onWitchThrowPotion(WitchThrowPotionEvent event);
+
+    void onElderGuardianAppearance(ElderGuardianAppearanceEvent event);
+
+    void onEntityDamageItem(EntityDamageItemEvent event);
+
+    void onEntityInsideBlock(EntityInsideBlockEvent event);
+
+    void onEntityLoadCrossbow(EntityLoadCrossbowEvent event);
+
+    void onEntityMove(EntityMoveEvent event);
+
+    void onPufferFishStateChange(PufferFishStateChangeEvent event);
+
+    // </editor-fold>
+    // <editor-fold desc="inventory">
+    void onPrepareResult(PrepareResultEvent event);
+
+    // </editor-fold>
+    // <editor-fold desc="player">
+    void onPlayerAdvancementCriterionGrant(PlayerAdvancementCriterionGrantEvent event);
+
+    void onPlayerArmorChange(PlayerArmorChangeEvent event);
+
+    void onPlayerAttackEntityCooldownReset(PlayerAttackEntityCooldownResetEvent event);
+
+    void onPlayerClientOptionsChange(PlayerClientOptionsChangeEvent event);
+
+    void onPlayerConnectionClose(PlayerConnectionCloseEvent event);
+
+    void onPlayerElytraBoost(PlayerElytraBoostEvent event);
+
+    void onPlayerHandshake(PlayerHandshakeEvent event);
+
+    void onPlayerJumpEvent(PlayerJumpEvent event);
+
+    void onPlayerLaunchProjectile(PlayerLaunchProjectileEvent event);
+
+    void onPlayerPickupExperience(PlayerPickupExperienceEvent event);
+
+    void onPlayerPostRespawn(PlayerPostRespawnEvent event);
+
+    void onPlayerReadyArrow(PlayerReadyArrowEvent event);
+
+    void onPlayerRecipeBookClick(PlayerRecipeBookClickEvent event);
+
+    void onPlayerSetSpawn(PlayerSetSpawnEvent event);
+
+    void onPlayerStartSpectatingEntity(PlayerStartSpectatingEntityEvent event);
+
+    void onPlayerStopSpectatingEntity(PlayerStopSpectatingEntityEvent event);
+
+    void onPlayerTeleportEndGateway(PlayerTeleportEndGatewayEvent event);
+
+    void onPlayerUseUnknownEntity(PlayerUseUnknownEntityEvent event);
+
+    void onAsyncChat(AsyncChatEvent event);
+
+    void onPlayerArmSwingEvent(PlayerArmSwingEvent event);
+
+    void onPlayerBedFailEnter(PlayerBedFailEnterEvent event);
+
+    void onPlayerChangeBeaconEffect(PlayerChangeBeaconEffectEvent event);
+
+    void onPlayerDeepSleep(PlayerDeepSleepEvent event);
+
+    void onPlayerFlowerPotManipulate(PlayerFlowerPotManipulateEvent event);
+
+    void onPlayerItemCooldown(PlayerItemCooldownEvent event);
+
+    void onPlayerItemFrameChange(PlayerItemFrameChangeEvent event);
+
+    void onPlayerLecternPageChange(PlayerLecternPageChangeEvent event);
+
+    void onPlayerLoomPatternSelect(PlayerLoomPatternSelectEvent event);
+
+    void onPlayerNameEntity(PlayerNameEntityEvent event);
+
+    void onPlayerPurchase(PlayerPurchaseEvent event);
+
+    void onPlayerSignCommandPreprocess(PlayerSignCommandPreprocessEvent event);
+
+    void onPlayerStonecutterRecipeSelect(PlayerStonecutterRecipeSelectEvent event);
+
+    void onPlayerTrade(PlayerTradeEvent event);
+
+    // </editor-fold>
+    // <editor-fold desc="profile">
+    void onFillProfile(FillProfileEvent event);
+
+    void onLookupProfile(LookupProfileEvent event);
+
+    void onPreFillProfile(PreFillProfileEvent event);
+
+    void onPreLookupProfile(PreLookupProfileEvent event);
+
+    void onProfileWhitelistVerify(ProfileWhitelistVerifyEvent event);
+
+    // </editor-fold>
+    // <editor-fold desc="server">
+    void onAsyncTabComplete(AsyncTabCompleteEvent event);
+
+    void onGS4Query(GS4QueryEvent event);
+
+    void onPaperServerListPingEvent(PaperServerListPingEvent event);
+
+    void onServerException(ServerExceptionEvent event);
+
+    void onServerTickEnd(ServerTickEndEvent event);
+
+    void onServerTickStart(ServerTickStartEvent event);
+
+    void onWhitelistToggle(WhitelistToggleEvent event);
+
+    void onServerResourcesReloaded(ServerResourcesReloadedEvent event);
+
+    // </editor-fold>
+    // <editor-fold desc="packet">
+    void onPlayerChunkLoad(PlayerChunkLoadEvent event);
+
+    void onPlayerChunkUnload(PlayerChunkUnloadEvent event);
+
+    // </editor-fold>
+    // <editor-fold desc="world">
+    void onWorldBorderBoundsChange(WorldBorderBoundsChangeEvent event);
+
+    void onWorldBorderBoundsChangeFinished(WorldBorderBoundsChangeFinishEvent event);
+
+    void onWorldBoardCenterChange(WorldBorderCenterChangeEvent event);
+
+    void onStructureLocate(StructureLocateEvent event);
+
+    void onWorldGameRuleChange(WorldGameRuleChangeEvent event);
+
+    // </editor-fold>
+    // </editor-fold>
+    // <editor-fold desc="Bukkit Events">
+    // <editor-fold desc="block">
     void onBlockBreak(BlockBreakEvent event);
 
     void onBlockBurn(BlockBurnEvent event);
@@ -49,11 +294,9 @@ public interface ILeafListener extends Listener {
 
     void onBlockDamage(BlockDamageEvent event);
 
-    void onBlockDispense(BlockDamageEvent event);
+    void onBlockDispenseArmor(BlockDispenseArmorEvent event);
 
     void onBlockDispense(BlockDispenseEvent event);
-
-    void onBlockDispenseArmor(BlockDispenseArmorEvent event);
 
     void onBlockDropItem(BlockDropItemEvent event);
 
@@ -63,9 +306,9 @@ public interface ILeafListener extends Listener {
 
     void onBlockFade(BlockFadeEvent event);
 
-    void onBlockFertilize(BlockFadeEvent event);
+    void onBlockFertilize(BlockFertilizeEvent event);
 
-    void onBlockForm(BlockFormEvent event);
+    void onBlockFormEvent(BlockFormEvent event);
 
     void onBlockFromTo(BlockFromToEvent event);
 
@@ -83,61 +326,73 @@ public interface ILeafListener extends Listener {
 
     void onBlockPlace(BlockPlaceEvent event);
 
+    void onBlockReceiveGame(BlockReceiveGameEvent event);
+
     void onBlockRedstone(BlockRedstoneEvent event);
 
     void onBlockShearEntity(BlockShearEntityEvent event);
 
     void onBlockSpread(BlockSpreadEvent event);
 
-    void onBrew(BrewEvent event);
-
-    void onBrewingStandFuel(BrewingStandFuelEvent event);
-
-    void onBroadcastMessage(BroadcastMessageEvent event);
-
     void onCauldronLevelChange(CauldronLevelChangeEvent event);
 
-    void onChunk(ChunkEvent event);
+    void onEntityBlockForm(EntityBlockFormEvent event);
 
-    void onChunkLoad(ChunkLoadEvent event);
+    void onFluidLevelChange(FluidLevelChangeEvent event);
 
-    void onChunkPopulate(ChunkPopulateEvent event);
+    void onLeavesDecay(LeavesDecayEvent event);
 
-    void onChunkUnload(ChunkUnloadEvent event);
+    void onMoistureChange(MoistureChangeEvent event);
 
-    void onCraftItem(CraftItemEvent event);
+    void onNotePlay(NotePlayEvent event);
+
+    void onSignChange(SignChangeEvent event);
+
+    void onSpongeAbsorb(SpongeAbsorbEvent event);
+
+    // </editor-fold>
+    // <editor-fold desc="command">
+    void onUnknownCommand(UnknownCommandEvent event);
+
+    // </editor-fold>
+    // <editor-fold desc="enchantment">
+    void onEnchantItem(EnchantItemEvent event);
+
+    void onPrepareItemEnchant(PrepareItemEnchantEvent event);
+
+    // </editor-fold>
+    // <editor-fold desc="entity">
+    void onAreaEffectCloudApply(AreaEffectCloudApplyEvent event);
+
+    void onArrowBodyCountChange(ArrowBodyCountChangeEvent event);
+
+    void onBatToggleSleep(BatToggleSleepEvent event);
 
     void onCreatureSpawn(CreatureSpawnEvent event);
 
     void onCreeperPower(CreeperPowerEvent event);
 
-    void onEnchantItem(EnchantItemEvent event);
-
     void onEnderDragonChangePhase(EnderDragonChangePhaseEvent event);
-
-    void onEntity(EntityEvent event);
 
     void onEntityAirChange(EntityAirChangeEvent event);
 
-    void onEntityBlockForm(EntityBlockFormEvent event);
-
-    void onEntityBreakDoorEvent(EntityBreakDoorEvent event);
+    void onEntityBreakDoor(EntityBreakDoorEvent event);
 
     void onEntityBreed(EntityBreedEvent event);
 
     void onEntityChangeBlock(EntityChangeBlockEvent event);
 
-    void onEntityCombust(EntityCombustEvent event);
-
     void onEntityCombustByBlock(EntityCombustByBlockEvent event);
 
     void onEntityCombustByEntity(EntityCombustByEntityEvent event);
 
-    void onEntityDamage(EntityDamageEvent event);
+    void onEntityCombust(EntityCombustEvent event);
 
-    void onEntityDamageByBlock(EntityDamageEvent event);
+    void onEntityDamageByBlock(EntityDamageByBlockEvent event);
 
     void onEntityDamageByEntity(EntityDamageByEntityEvent event);
+
+    void onEntityDamage(EntityDamageEvent event);
 
     void onEntityDeath(EntityDeathEvent event);
 
@@ -145,15 +400,23 @@ public interface ILeafListener extends Listener {
 
     void onEntityEnterBlock(EntityEnterBlockEvent event);
 
+    void onEntityEnterLoveMode(EntityEnterLoveModeEvent event);
+
+    void onEntityExhaustion(EntityExhaustionEvent event);
+
     void onEntityExplode(EntityExplodeEvent event);
 
     void onEntityInteract(EntityInteractEvent event);
 
     void onEntityPickupItem(EntityPickupItemEvent event);
 
+    void onEntityPlace(EntityPlaceEvent event);
+
+    void onEntityPortalEnter(EntityPortalEnterEvent event);
+
     void onEntityPortal(EntityPortalEvent event);
 
-    void onEntityPortalExit(EntityPortalExitEvent event);
+    void onEntityPortalExit(EntityPortalEnterEvent event);
 
     void onEntityPoseChange(EntityPoseChangeEvent event);
 
@@ -167,11 +430,13 @@ public interface ILeafListener extends Listener {
 
     void onEntitySpawn(EntitySpawnEvent event);
 
+    void onEntitySpellCast(EntitySpellCastEvent event);
+
     void onEntityTame(EntityTameEvent event);
 
     void onEntityTarget(EntityTargetEvent event);
 
-    void onEntityTargetLivingEntity(EntityTargetLivingEntityEvent event);
+    void onEntityTargetLivingEntity(EntityTargetEvent event);
 
     void onEntityTeleport(EntityTeleportEvent event);
 
@@ -189,9 +454,65 @@ public interface ILeafListener extends Listener {
 
     void onFireworkExplode(FireworkExplodeEvent event);
 
-    void onFluidLevelChange(FluidLevelChangeEvent event);
-
     void onFoodLevelChange(FoodLevelChangeEvent event);
+
+    void onHorseJump(HorseJumpEvent event);
+
+    void onItemDespawn(ItemDespawnEvent event);
+
+    void onItemMerge(ItemMergeEvent event);
+
+    void onItemSpawn(ItemSpawnEvent event);
+
+    void onLingeringPotionSplash(LingeringPotionSplashEvent event);
+
+    void onPiglinBarter(PiglinBarterEvent event);
+
+    void onPigZap(PigZapEvent event);
+
+    void onPigZombieAnger(PigZombieAngerEvent event);
+
+    void onPlayerDeath(PlayerDeathEvent event);
+
+    void onPlayerLeashEntity(PlayerLeashEntityEvent event);
+
+    void onPotionSplash(PotionSplashEvent event);
+
+    void onProjectileHit(ProjectileHitEvent event);
+
+    void onProjectileLaunch(ProjectileLaunchEvent event);
+
+    void onSheepDyeWool(SheepDyeWoolEvent event);
+
+    void onSheepRegrowWool(SheepRegrowWoolEvent event);
+
+    void onSlimeSplit(SlimeSplitEvent event);
+
+    void onSpawnerSpawn(SpawnerSpawnEvent event);
+
+    void onStriderTemperatureChange(StriderTemperatureChangeEvent event);
+
+    void onVillagerAcquireTrade(VillagerAcquireTradeEvent event);
+
+    void onVillagerCareerChange(VillagerCareerChangeEvent event);
+
+    void onVillagerReplenishTrade(VillagerReplenishTradeEvent event);
+
+    // </editor-fold>
+    // <editor-fold desc="hanging">
+    void onHangingBreakByEntity(HangingBreakByEntityEvent event);
+
+    void onHangingBreak(HangingBreakEvent event);
+
+    void onHangingPlace(HangingPlaceEvent event);
+
+    // </editor-fold>
+    // <editor-fold desc="inventory">
+    void onBrew(BrewEvent event);
+
+    void onBrewingStandFuel(BrewingStandFuelEvent event);
+
+    void onCraftItem(CraftItemEvent event);
 
     void onFurnaceBurn(FurnaceBurnEvent event);
 
@@ -199,17 +520,7 @@ public interface ILeafListener extends Listener {
 
     void onFurnaceSmelt(FurnaceSmeltEvent event);
 
-    void onHanging(HangingEvent event);
-
-    void onHangingBreak(HangingBreakEvent event);
-
-    void onHangingBreakByEntity(HangingBreakByEntityEvent event);
-
-    void onHangingPlace(HangingPlaceEvent event);
-
-    void onHorseJump(HorseJumpEvent event);
-
-    void onInventory(InventoryEvent event);
+    void onFurnaceStartSmelt(FurnaceStartSmeltEvent event);
 
     void onInventoryClick(InventoryClickEvent event);
 
@@ -219,7 +530,7 @@ public interface ILeafListener extends Listener {
 
     void onInventoryDrag(InventoryDragEvent event);
 
-    void onInventoryInteract(InventoryInteractEvent event);
+    void onInventory(InventoryEvent event);
 
     void onInventoryMoveItem(InventoryMoveItemEvent event);
 
@@ -227,29 +538,19 @@ public interface ILeafListener extends Listener {
 
     void onInventoryPickupItem(InventoryPickupItemEvent event);
 
-    void onItemDespawn(ItemDespawnEvent event);
+    void onPrepareAnvil(PrepareAnvilEvent event);
 
-    void onItemMerge(ItemMergeEvent event);
+    void onPrepareItemCraft(PrepareItemCraftEvent event);
 
-    void onItemSpawn(ItemSpawnEvent event);
+    void onPrepareSmithing(PrepareSmithingEvent event);
 
-    void onLeaveDecay(LeavesDecayEvent event);
+    void onSmithItem(SmithItemEvent event);
 
-    void onLightningStrike(LightningStrikeEvent event);
+    void onTradeSelect(TradeSelectEvent event);
 
-    void onLingeringPotionSplash(LingeringPotionSplashEvent event);
-
-    void onMapInitialize(MapInitializeEvent event);
-
-    void onMoistureChange(MoistureChangeEvent event);
-
-    void onNotePlay(NotePlayEvent event);
-
-    void onPigZap(PigZapEvent event);
-
-    void onPigZombieAnger(PigZombieAngerEvent event);
-
-    void onPlayer(PlayerEvent event);
+    // </editor-fold>
+    // <editor-fold desc="player">
+    void onAsyncPlayerPreLogin(AsyncPlayerPreLoginEvent event);
 
     void onPlayerAdvancementDone(PlayerAdvancementDoneEvent event);
 
@@ -257,13 +558,15 @@ public interface ILeafListener extends Listener {
 
     void onPlayerArmorStandManipulate(PlayerArmorStandManipulateEvent event);
 
+    void onPlayerAttemptPickupItem(PlayerAttemptPickupItemEvent event);
+
     void onPlayerBedEnter(PlayerBedEnterEvent event);
 
     void onPlayerBedLeave(PlayerBedLeaveEvent event);
 
-    void onPlayerBucket(PlayerBucketEvent event);
-
     void onPlayerBucketEmpty(PlayerBucketEmptyEvent event);
+
+    void onPlayerBucketEntity(PlayerBucketEntityEvent event);
 
     void onPlayerBucketFill(PlayerBucketFillEvent event);
 
@@ -271,13 +574,9 @@ public interface ILeafListener extends Listener {
 
     void onPlayerChangedWorld(PlayerChangedWorldEvent event);
 
-    void onPlayerChannel(PlayerChannelEvent event);
-
     void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event);
 
     void onPlayerCommandSend(PlayerCommandSendEvent event);
-
-    void onPlayerDeath(PlayerDeathEvent event);
 
     void onPlayerDropItem(PlayerDropItemEvent event);
 
@@ -285,19 +584,19 @@ public interface ILeafListener extends Listener {
 
     void onPlayerEggThrow(PlayerEggThrowEvent event);
 
-    void onPlayerEntityUnleash(PlayerUnleashEntityEvent event);
-
     void onPlayerExpChange(PlayerExpChangeEvent event);
 
     void onPlayerFish(PlayerFishEvent event);
 
     void onPlayerGameModeChange(PlayerGameModeChangeEvent event);
 
-    void onPlayerInteract(PlayerInteractEvent event);
+    void onPlayerHarvestBlock(PlayerHarvestBlockEvent event);
 
     void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event);
 
     void onPlayerInteractEntity(PlayerInteractEntityEvent event);
+
+    void onPlayerInteract(PlayerInteractEvent event);
 
     void onPlayerItemBreak(PlayerItemBreakEvent event);
 
@@ -313,8 +612,6 @@ public interface ILeafListener extends Listener {
 
     void onPlayerKick(PlayerKickEvent event);
 
-    void onPlayerLeashEntity(PlayerLeashEntityEvent event);
-
     void onPlayerLevelChange(PlayerLevelChangeEvent event);
 
     void onPlayerLocaleChange(PlayerLocaleChangeEvent event);
@@ -324,6 +621,8 @@ public interface ILeafListener extends Listener {
     void onPlayerMove(PlayerMoveEvent event);
 
     void onPlayerPickupArrow(PlayerPickupArrowEvent event);
+
+    void onPlayerPortal(PlayerPortalEvent event);
 
     void onPlayerQuit(PlayerQuitEvent event);
 
@@ -341,42 +640,26 @@ public interface ILeafListener extends Listener {
 
     void onPlayerStatisticIncrement(PlayerStatisticIncrementEvent event);
 
-    void onPlayerSwapHandItems(PlayerSwapHandItemsEvent event);
+    void onPlayerSwapHandItem(PlayerSwapHandItemsEvent event);
 
     void onPlayerTakeLecternBook(PlayerTakeLecternBookEvent event);
+
+    void onPlayerTeleport(PlayerTeleportEvent event);
 
     void onPlayerToggleFlight(PlayerToggleFlightEvent event);
 
     void onPlayerToggleSneak(PlayerToggleSneakEvent event);
 
-    void onPlayerToggleSpring(PlayerToggleSprintEvent event);
+    void onPlayerToggleSprint(PlayerToggleSprintEvent event);
+
+    void onPlayerUnleashEntity(PlayerUnleashEntityEvent event);
 
     void onPlayerUnregisterChannel(PlayerUnregisterChannelEvent event);
 
     void onPlayerVelocity(PlayerVelocityEvent event);
 
-    void onPlugin(PluginEvent event);
-
-    void onPluginDisable(PluginDisableEvent event);
-
-    void onPluginEnable(PluginEnableEvent event);
-
-    void onPortalCreate(PortalCreateEvent event);
-
-    void onPotionSplash(PotionSplashEvent event);
-
-    void onPrepareAnvil(PrepareAnvilEvent event);
-
-    void onPrepareItemCraft(PrepareItemCraftEvent event);
-
-    void onPrepareItemEnchant(PrepareItemEnchantEvent event);
-
-    void onProjectileHit(ProjectileHitEvent event);
-
-    void onProjectileLaunch(ProjectileLaunchEvent event);
-
-    void onRaid(RaidEvent event);
-
+    // </editor-fold>
+    // <editor-fold desc="raid">
     void onRaidFinish(RaidFinishEvent event);
 
     void onRaidSpawnWave(RaidSpawnWaveEvent event);
@@ -385,9 +668,17 @@ public interface ILeafListener extends Listener {
 
     void onRaidTrigger(RaidTriggerEvent event);
 
-    void onRemoteServerCommand(RemoteServerCommandEvent event);
+    // </editor-fold>
+    // <editor-fold desc="server">
+    void onBroadcastMessage(BroadcastMessageEvent event);
 
-    void onServer(ServerEvent event);
+    void onMapInitialize(MapInitializeEvent event);
+
+    void onPluginDisable(PluginDisableEvent event);
+
+    void onPluginEnable(PluginEnableEvent event);
+
+    void onRemoteServerCommand(RemoteServerCommandEvent event);
 
     void onServerCommand(ServerCommandEvent event);
 
@@ -395,39 +686,15 @@ public interface ILeafListener extends Listener {
 
     void onServerLoad(ServerLoadEvent event);
 
-    void onService(ServiceEvent event);
-
     void onServiceRegister(ServiceRegisterEvent event);
 
     void onServiceUnregister(ServiceUnregisterEvent event);
 
-    void onSheepDyeWool(SheepDyeWoolEvent event);
-
-    void onSheepRegrowWool(SheepRegrowWoolEvent event);
-
-    void onSignChange(SignChangeEvent event);
-
-    void onSlimeSplit(SlimeSplitEvent event);
-
-    void onSpawnChange(SpawnChangeEvent event);
-
-    void onSpongeAbsorb(SpongeAbsorbEvent event);
-
-    void onStructureGrow(StructureGrowEvent event);
-
     void onTabComplete(TabCompleteEvent event);
 
-    void onThunderChange(ThunderChangeEvent event);
-
-    void onTimeSkip(TimeSkipEvent event);
-
-    void onTradeSelect(TradeSelectEvent event);
-
-    void onVehicle(VehicleEvent event);
-
+    // </editor-fold>
+    // <editor-fold desc="vehicle">
     void onVehicleBlockCollision(VehicleBlockCollisionEvent event);
-
-    void onVehicleCollision(VehicleCollisionEvent event);
 
     void onVehicleCreate(VehicleCreateEvent event);
 
@@ -445,17 +712,37 @@ public interface ILeafListener extends Listener {
 
     void onVehicleUpdate(VehicleUpdateEvent event);
 
-    void onVillagerAcquireTrade(VillagerAcquireTradeEvent event);
+    // </editor-fold>
+    // <editor-fold desc="weather">
+    void onLightningStrike(LightningStrikeEvent event);
 
-    void onVillagerCareerChange(VillagerCareerChangeEvent event);
-
-    void onVillagerReplenishTrade(VillagerReplenishTradeEvent event);
-
-    void onWeather(WeatherEvent event);
+    void onThunderChange(ThunderChangeEvent event);
 
     void onWeatherChange(WeatherChangeEvent event);
 
-    void onWorld(WorldEvent event);
+    // </editor-fold>
+    // <editor-fold desc="world">
+    void onChunkLoad(ChunkLoadEvent event);
+
+    void onChunkPopulate(ChunkPopulateEvent event);
+
+    void onChunkUnload(ChunkUnloadEvent event);
+
+    void onEntitiesLoad(EntitiesLoadEvent event);
+
+    void onEntitiesUnload(EntitiesUnloadEvent event);
+
+    void onGenericGame(GenericGameEvent event);
+
+    void onLootGenerate(LootGenerateEvent event);
+
+    void onPortalCreate(PortalCreateEvent event);
+
+    void onSpawnChange(SpawnChangeEvent event);
+
+    void onStructureGrow(StructureGrowEvent event);
+
+    void onTimeSkip(TimeSkipEvent event);
 
     void onWorldInit(WorldInitEvent event);
 
@@ -464,5 +751,6 @@ public interface ILeafListener extends Listener {
     void onWorldSave(WorldSaveEvent event);
 
     void onWorldUnload(WorldUnloadEvent event);
-
+    // </editor-fold>
+    // </editor-fold>
 }

@@ -2,6 +2,7 @@ package mc.leaf.core.interfaces;
 
 import mc.leaf.core.events.interfaces.IEventBridge;
 import mc.leaf.core.services.completion.SyntaxContainer;
+import org.bukkit.plugin.PluginDescriptionFile;
 
 import java.util.List;
 
@@ -36,10 +37,20 @@ public interface ILeafCore {
     void registerDynamicOptions(String name, List<String> options);
 
     /**
-     * Retrieve all {@link ILeafModule} registered (enabled & disabled).
+     * Retrieve all {@link ILeafModule} registered.
      *
      * @return All registered {@link ILeafModule}
      */
     List<ILeafModule> getLeafModules();
+
+    /**
+     * Register a new module.
+     *
+     * @param module
+     *         The module.
+     */
+    void registerModule(ILeafModule module);
+
+    PluginDescriptionFile getDescription();
 
 }

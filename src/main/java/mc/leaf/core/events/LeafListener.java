@@ -1,27 +1,50 @@
 package mc.leaf.core.events;
 
+import com.destroystokyo.paper.event.block.AnvilDamagedEvent;
+import com.destroystokyo.paper.event.block.BeaconEffectEvent;
+import com.destroystokyo.paper.event.block.BlockDestroyEvent;
+import com.destroystokyo.paper.event.block.TNTPrimeEvent;
+import com.destroystokyo.paper.event.entity.*;
+import com.destroystokyo.paper.event.inventory.PrepareResultEvent;
+import com.destroystokyo.paper.event.player.*;
+import com.destroystokyo.paper.event.profile.*;
+import com.destroystokyo.paper.event.server.*;
+import io.papermc.paper.event.block.*;
+import io.papermc.paper.event.entity.*;
+import io.papermc.paper.event.packet.PlayerChunkLoadEvent;
+import io.papermc.paper.event.packet.PlayerChunkUnloadEvent;
+import io.papermc.paper.event.player.*;
+import io.papermc.paper.event.server.ServerResourcesReloadedEvent;
+import io.papermc.paper.event.world.StructureLocateEvent;
+import io.papermc.paper.event.world.WorldGameRuleChangeEvent;
+import io.papermc.paper.event.world.border.WorldBorderBoundsChangeEvent;
+import io.papermc.paper.event.world.border.WorldBorderBoundsChangeFinishEvent;
+import io.papermc.paper.event.world.border.WorldBorderCenterChangeEvent;
 import mc.leaf.core.events.interfaces.ILeafListener;
 import org.bukkit.event.block.*;
+import org.bukkit.event.command.UnknownCommandEvent;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
-import org.bukkit.event.hanging.HangingEvent;
 import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.inventory.*;
+import org.bukkit.event.player.PlayerLocaleChangeEvent;
 import org.bukkit.event.player.*;
-import org.bukkit.event.raid.*;
+import org.bukkit.event.raid.RaidFinishEvent;
+import org.bukkit.event.raid.RaidSpawnWaveEvent;
+import org.bukkit.event.raid.RaidStopEvent;
+import org.bukkit.event.raid.RaidTriggerEvent;
 import org.bukkit.event.server.*;
 import org.bukkit.event.vehicle.*;
 import org.bukkit.event.weather.LightningStrikeEvent;
 import org.bukkit.event.weather.ThunderChangeEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
-import org.bukkit.event.weather.WeatherEvent;
 import org.bukkit.event.world.*;
 
 /**
- * Helper class containing all Bukkit events. You can extends it to benefit from your IDE "Override Method" feature.
+ * Helper class containing all Bukkit events. You can extend it to benefit from your IDE "Override Method" feature.
  * Don't forget to add the {@link org.bukkit.event.EventHandler} annotation on overridden methods.
  *
  * @author alexpado
@@ -29,657 +52,1648 @@ import org.bukkit.event.world.*;
 public class LeafListener implements ILeafListener {
 
     @Override
-    public void onAreaEffectCloudApply(AreaEffectCloudApplyEvent event) {}
+    public void onAnvilDamaged(AnvilDamagedEvent event) {
 
+    }
+
+    @Override
+    public void onBeaconEffect(BeaconEffectEvent event) {
+
+    }
+
+    @Override
+    public void onBlockDestroy(BlockDestroyEvent event) {
+
+    }
+
+    @Override
+    public void onTNTPrime(TNTPrimeEvent event) {
+
+    }
+
+    @Override
+    public void onBeaconActivated(BeaconActivatedEvent event) {
+
+    }
+
+    @Override
+    public void onBeaconDeactivated(BeaconDeactivatedEvent event) {
+
+    }
+
+    @Override
+    public void onBellRevealRaider(BellRevealRaiderEvent event) {
+
+    }
+
+    @Override
+    public void onBellRing(BellRingEvent event) {
+
+    }
+
+    @Override
+    public void onBlockBreakBlock(BlockBreakBlockEvent event) {
+
+    }
+
+    @Override
+    public void onBlockFailedDispense(BlockFailedDispenseEvent event) {
+
+    }
+
+    @Override
+    public void onBlockPreDispense(BlockPreDispenseEvent event) {
+
+    }
+
+    @Override
+    public void onDragonEggForm(DragonEggFormEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerShearBlock(PlayerShearBlockEvent event) {
+
+    }
+
+    @Override
+    public void onTargetHit(TargetHitEvent event) {
+
+    }
+
+    @Override
+    public void onCreeperIgnite(CreeperIgniteEvent event) {
+
+    }
+
+    @Override
+    public void onEnderDragonFireballHit(EnderDragonFireballHitEvent event) {
+
+    }
+
+    @Override
+    public void onEnderDragonFlame(EnderDragonFlameEvent event) {
+
+    }
+
+    @Override
+    public void onEnderDragonShootFireball(EnderDragonShootFireballEvent event) {
+
+    }
+
+    @Override
+    public void onEndermanAttackPlayer(EndermanAttackPlayerEvent event) {
+
+    }
+
+    @Override
+    public void onEndermanEscape(EndermanEscapeEvent event) {
+
+    }
+
+    @Override
+    public void onEntityAddToWorld(EntityAddToWorldEvent event) {
+
+    }
+
+    @Override
+    public void onEntityJump(EntityJumpEvent event) {
+
+    }
+
+    @Override
+    public void onEntityKnockbackByEntity(EntityKnockbackByEntityEvent event) {
+
+    }
+
+    @Override
+    public void onEntityPathfind(EntityPathfindEvent event) {
+
+    }
+
+    @Override
+    public void onEntityRemoveFromWorld(EntityRemoveFromWorldEvent event) {
+
+    }
+
+    @Override
+    public void onEntityTeleportEndGateway(EntityTeleportEndGatewayEvent event) {
+
+    }
+
+    @Override
+    public void onEntityZap(EntityZapEvent event) {
+
+    }
+
+    @Override
+    public void onExperienceOrbMerge(ExperienceOrbMergeEvent event) {
+
+    }
+
+    @Override
+    public void onPhantomPreSpawn(PhantomPreSpawnEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerNaturallySpawnCreatures(PlayerNaturallySpawnCreaturesEvent event) {
+
+    }
+
+    @Override
+    public void onPreCreatureSpawn(PreCreatureSpawnEvent event) {
+
+    }
+
+    @Override
+    public void onPreSpawnerSpawn(PreSpawnerSpawnEvent event) {
+
+    }
+
+    @Override
+    public void onProjectileCollide(ProjectileCollideEvent event) {
+
+    }
+
+    @Override
+    public void onSkeletonHorseTrap(SkeletonHorseTrapEvent event) {
+
+    }
+
+    @Override
+    public void onSlimeChangeDirection(SlimeChangeDirectionEvent event) {
+
+    }
+
+    @Override
+    public void onSlimePathfind(SlimePathfindEvent event) {
+
+    }
+
+    @Override
+    public void onSlimeSwim(SlimeSwimEvent event) {
+
+    }
+
+    @Override
+    public void onSlimeTargetLivingEntity(SlimeTargetLivingEntityEvent event) {
+
+    }
+
+    @Override
+    public void onSlimeWander(SlimeWanderEvent event) {
+
+    }
+
+    @Override
+    public void onThrownEggHatch(ThrownEggHatchEvent event) {
+
+    }
+
+    @Override
+    public void onTurtleGoHome(TurtleGoHomeEvent event) {
+
+    }
+
+    @Override
+    public void onTurtleLayEgg(TurtleLayEggEvent event) {
+
+    }
+
+    @Override
+    public void onTurtleStartDigging(TurtleStartDiggingEvent event) {
+
+    }
+
+    @Override
+    public void onWitchConsumePotion(WitchConsumePotionEvent event) {
+
+    }
+
+    @Override
+    public void onWitchReadyPotion(WitchReadyPotionEvent event) {
+
+    }
+
+    @Override
+    public void onWitchThrowPotion(WitchThrowPotionEvent event) {
+
+    }
+
+    @Override
+    public void onElderGuardianAppearance(ElderGuardianAppearanceEvent event) {
+
+    }
+
+    @Override
+    public void onEntityDamageItem(EntityDamageItemEvent event) {
+
+    }
+
+    @Override
+    public void onEntityInsideBlock(EntityInsideBlockEvent event) {
+
+    }
+
+    @Override
+    public void onEntityLoadCrossbow(EntityLoadCrossbowEvent event) {
+
+    }
+
+    @Override
+    public void onEntityMove(EntityMoveEvent event) {
+
+    }
+
+    @Override
+    public void onPufferFishStateChange(PufferFishStateChangeEvent event) {
+
+    }
+
+    @Override
+    public void onPrepareResult(PrepareResultEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerAdvancementCriterionGrant(PlayerAdvancementCriterionGrantEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerArmorChange(PlayerArmorChangeEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerAttackEntityCooldownReset(PlayerAttackEntityCooldownResetEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerClientOptionsChange(PlayerClientOptionsChangeEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerConnectionClose(PlayerConnectionCloseEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerElytraBoost(PlayerElytraBoostEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerHandshake(PlayerHandshakeEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerJumpEvent(PlayerJumpEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerLaunchProjectile(PlayerLaunchProjectileEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerPickupExperience(PlayerPickupExperienceEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerPostRespawn(PlayerPostRespawnEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerReadyArrow(PlayerReadyArrowEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerRecipeBookClick(PlayerRecipeBookClickEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerSetSpawn(PlayerSetSpawnEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerStartSpectatingEntity(PlayerStartSpectatingEntityEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerStopSpectatingEntity(PlayerStopSpectatingEntityEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerTeleportEndGateway(PlayerTeleportEndGatewayEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerUseUnknownEntity(PlayerUseUnknownEntityEvent event) {
+
+    }
+
+    @Override
+    public void onAsyncChat(AsyncChatEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerArmSwingEvent(PlayerArmSwingEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerBedFailEnter(PlayerBedFailEnterEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerChangeBeaconEffect(PlayerChangeBeaconEffectEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerDeepSleep(PlayerDeepSleepEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerFlowerPotManipulate(PlayerFlowerPotManipulateEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerItemCooldown(PlayerItemCooldownEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerItemFrameChange(PlayerItemFrameChangeEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerLecternPageChange(PlayerLecternPageChangeEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerLoomPatternSelect(PlayerLoomPatternSelectEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerNameEntity(PlayerNameEntityEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerPurchase(PlayerPurchaseEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerSignCommandPreprocess(PlayerSignCommandPreprocessEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerStonecutterRecipeSelect(PlayerStonecutterRecipeSelectEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerTrade(PlayerTradeEvent event) {
+
+    }
+
+    @Override
+    public void onFillProfile(FillProfileEvent event) {
+
+    }
+
+    @Override
+    public void onLookupProfile(LookupProfileEvent event) {
+
+    }
+
+    @Override
+    public void onPreFillProfile(PreFillProfileEvent event) {
+
+    }
+
+    @Override
+    public void onPreLookupProfile(PreLookupProfileEvent event) {
+
+    }
+
+    @Override
+    public void onProfileWhitelistVerify(ProfileWhitelistVerifyEvent event) {
+
+    }
+
+    @Override
+    public void onAsyncTabComplete(AsyncTabCompleteEvent event) {
+
+    }
+
+    @Override
+    public void onGS4Query(GS4QueryEvent event) {
+
+    }
+
+    @Override
+    public void onPaperServerListPingEvent(PaperServerListPingEvent event) {
+
+    }
+
+    @Override
+    public void onServerException(ServerExceptionEvent event) {
+
+    }
+
+    @Override
+    public void onServerTickEnd(ServerTickEndEvent event) {
+
+    }
+
+    @Override
+    public void onServerTickStart(ServerTickStartEvent event) {
+
+    }
+
+    @Override
+    public void onWhitelistToggle(WhitelistToggleEvent event) {
+
+    }
+
+    @Override
+    public void onServerResourcesReloaded(ServerResourcesReloadedEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerChunkLoad(PlayerChunkLoadEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerChunkUnload(PlayerChunkUnloadEvent event) {
+
+    }
+
+    @Override
+    public void onWorldBorderBoundsChange(WorldBorderBoundsChangeEvent event) {
+
+    }
+
+    @Override
+    public void onWorldBorderBoundsChangeFinished(WorldBorderBoundsChangeFinishEvent event) {
+
+    }
+
+    @Override
+    public void onWorldBoardCenterChange(WorldBorderCenterChangeEvent event) {
+
+    }
+
+    @Override
+    public void onStructureLocate(StructureLocateEvent event) {
+
+    }
+
+    @Override
+    public void onWorldGameRuleChange(WorldGameRuleChangeEvent event) {
+
+    }
+
+    @Override
+    public void onBlockBreak(BlockBreakEvent event) {
+
+    }
+
+    @Override
+    public void onBlockBurn(BlockBurnEvent event) {
+
+    }
+
+    @Override
+    public void onBlockCanBuild(BlockCanBuildEvent event) {
+
+    }
+
+    @Override
+    public void onBlockCook(BlockCookEvent event) {
+
+    }
+
+    @Override
+    public void onBlockDamage(BlockDamageEvent event) {
+
+    }
+
+    @Override
+    public void onBlockDispenseArmor(BlockDispenseArmorEvent event) {
+
+    }
+
     @Override
-    public void onAsyncPlayerChat(AsyncPlayerChatEvent event) {}
+    public void onBlockDispense(BlockDispenseEvent event) {
 
+    }
+
     @Override
-    public void onAsyncPlayerPreLogin(AsyncPlayerPreLoginEvent event) {}
+    public void onBlockDropItem(BlockDropItemEvent event) {
+
+    }
 
     @Override
-    public void onBatToggleSleep(BatToggleSleepEvent event) {}
+    public void onBlockExp(BlockExpEvent event) {
 
+    }
+
     @Override
-    public void onBlock(BlockEvent event) {}
+    public void onBlockExplode(BlockExplodeEvent event) {
+
+    }
 
     @Override
-    public void onBlockBreak(BlockBreakEvent event) {}
+    public void onBlockFade(BlockFadeEvent event) {
 
+    }
+
     @Override
-    public void onBlockBurn(BlockBurnEvent event) {}
+    public void onBlockFertilize(BlockFertilizeEvent event) {
+
+    }
 
     @Override
-    public void onBlockCanBuild(BlockCanBuildEvent event) {}
+    public void onBlockFormEvent(BlockFormEvent event) {
 
+    }
+
     @Override
-    public void onBlockCook(BlockCookEvent event) {}
+    public void onBlockFromTo(BlockFromToEvent event) {
+
+    }
 
     @Override
-    public void onBlockDamage(BlockDamageEvent event) {}
+    public void onBlockGrow(BlockGrowEvent event) {
 
+    }
+
     @Override
-    public void onBlockDispense(BlockDamageEvent event) {}
+    public void onBlockIgnite(BlockIgniteEvent event) {
+
+    }
 
     @Override
-    public void onBlockDispense(BlockDispenseEvent event) {}
+    public void onBlockMultiPlace(BlockMultiPlaceEvent event) {
 
+    }
+
     @Override
-    public void onBlockDispenseArmor(BlockDispenseArmorEvent event) {}
+    public void onBlockPhysics(BlockPhysicsEvent event) {
+
+    }
 
     @Override
-    public void onBlockDropItem(BlockDropItemEvent event) {}
+    public void onBlockPistonExtend(BlockPistonExtendEvent event) {
 
+    }
+
     @Override
-    public void onBlockExp(BlockExpEvent event) {}
+    public void onBlockPistonRetract(BlockPistonRetractEvent event) {
+
+    }
 
     @Override
-    public void onBlockExplode(BlockExplodeEvent event) {}
+    public void onBlockPlace(BlockPlaceEvent event) {
 
+    }
+
     @Override
-    public void onBlockFade(BlockFadeEvent event) {}
+    public void onBlockReceiveGame(BlockReceiveGameEvent event) {
+
+    }
 
     @Override
-    public void onBlockFertilize(BlockFadeEvent event) {}
+    public void onBlockRedstone(BlockRedstoneEvent event) {
 
+    }
+
     @Override
-    public void onBlockForm(BlockFormEvent event) {}
+    public void onBlockShearEntity(BlockShearEntityEvent event) {
+
+    }
 
     @Override
-    public void onBlockFromTo(BlockFromToEvent event) {}
+    public void onBlockSpread(BlockSpreadEvent event) {
 
+    }
+
     @Override
-    public void onBlockGrow(BlockGrowEvent event) {}
+    public void onCauldronLevelChange(CauldronLevelChangeEvent event) {
+
+    }
 
     @Override
-    public void onBlockIgnite(BlockIgniteEvent event) {}
+    public void onEntityBlockForm(EntityBlockFormEvent event) {
 
+    }
+
     @Override
-    public void onBlockMultiPlace(BlockMultiPlaceEvent event) {}
+    public void onFluidLevelChange(FluidLevelChangeEvent event) {
+
+    }
 
     @Override
-    public void onBlockPhysics(BlockPhysicsEvent event) {}
+    public void onLeavesDecay(LeavesDecayEvent event) {
 
+    }
+
     @Override
-    public void onBlockPistonExtend(BlockPistonExtendEvent event) {}
+    public void onMoistureChange(MoistureChangeEvent event) {
+
+    }
 
     @Override
-    public void onBlockPistonRetract(BlockPistonRetractEvent event) {}
+    public void onNotePlay(NotePlayEvent event) {
 
+    }
+
     @Override
-    public void onBlockPlace(BlockPlaceEvent event) {}
+    public void onSignChange(SignChangeEvent event) {
+
+    }
 
     @Override
-    public void onBlockRedstone(BlockRedstoneEvent event) {}
+    public void onSpongeAbsorb(SpongeAbsorbEvent event) {
 
+    }
+
     @Override
-    public void onBlockShearEntity(BlockShearEntityEvent event) {}
+    public void onUnknownCommand(UnknownCommandEvent event) {
+
+    }
 
     @Override
-    public void onBlockSpread(BlockSpreadEvent event) {}
+    public void onEnchantItem(EnchantItemEvent event) {
 
+    }
+
     @Override
-    public void onBrew(BrewEvent event) {}
+    public void onPrepareItemEnchant(PrepareItemEnchantEvent event) {
+
+    }
 
     @Override
-    public void onBrewingStandFuel(BrewingStandFuelEvent event) {}
+    public void onAreaEffectCloudApply(AreaEffectCloudApplyEvent event) {
 
+    }
+
     @Override
-    public void onBroadcastMessage(BroadcastMessageEvent event) {}
+    public void onArrowBodyCountChange(ArrowBodyCountChangeEvent event) {
+
+    }
 
     @Override
-    public void onCauldronLevelChange(CauldronLevelChangeEvent event) {}
+    public void onBatToggleSleep(BatToggleSleepEvent event) {
 
+    }
+
     @Override
-    public void onChunk(ChunkEvent event) {}
+    public void onCreatureSpawn(CreatureSpawnEvent event) {
+
+    }
 
     @Override
-    public void onChunkLoad(ChunkLoadEvent event) {}
+    public void onCreeperPower(CreeperPowerEvent event) {
 
+    }
+
     @Override
-    public void onChunkPopulate(ChunkPopulateEvent event) {}
+    public void onEnderDragonChangePhase(EnderDragonChangePhaseEvent event) {
+
+    }
 
     @Override
-    public void onChunkUnload(ChunkUnloadEvent event) {}
+    public void onEntityAirChange(EntityAirChangeEvent event) {
 
+    }
+
     @Override
-    public void onCraftItem(CraftItemEvent event) {}
+    public void onEntityBreakDoor(EntityBreakDoorEvent event) {
+
+    }
 
     @Override
-    public void onCreatureSpawn(CreatureSpawnEvent event) {}
+    public void onEntityBreed(EntityBreedEvent event) {
 
+    }
+
     @Override
-    public void onCreeperPower(CreeperPowerEvent event) {}
+    public void onEntityChangeBlock(EntityChangeBlockEvent event) {
+
+    }
 
     @Override
-    public void onEnchantItem(EnchantItemEvent event) {}
+    public void onEntityCombustByBlock(EntityCombustByBlockEvent event) {
 
+    }
+
     @Override
-    public void onEnderDragonChangePhase(EnderDragonChangePhaseEvent event) {}
+    public void onEntityCombustByEntity(EntityCombustByEntityEvent event) {
+
+    }
 
     @Override
-    public void onEntity(EntityEvent event) {}
+    public void onEntityCombust(EntityCombustEvent event) {
 
+    }
+
     @Override
-    public void onEntityAirChange(EntityAirChangeEvent event) {}
+    public void onEntityDamageByBlock(EntityDamageByBlockEvent event) {
+
+    }
 
     @Override
-    public void onEntityBlockForm(EntityBlockFormEvent event) {}
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
 
+    }
+
     @Override
-    public void onEntityBreakDoorEvent(EntityBreakDoorEvent event) {}
+    public void onEntityDamage(EntityDamageEvent event) {
+
+    }
 
     @Override
-    public void onEntityBreed(EntityBreedEvent event) {}
+    public void onEntityDeath(EntityDeathEvent event) {
 
+    }
+
     @Override
-    public void onEntityChangeBlock(EntityChangeBlockEvent event) {}
+    public void onEntityDropItem(EntityDropItemEvent event) {
+
+    }
 
     @Override
-    public void onEntityCombust(EntityCombustEvent event) {}
+    public void onEntityEnterBlock(EntityEnterBlockEvent event) {
 
+    }
+
     @Override
-    public void onEntityCombustByBlock(EntityCombustByBlockEvent event) {}
+    public void onEntityEnterLoveMode(EntityEnterLoveModeEvent event) {
+
+    }
 
     @Override
-    public void onEntityCombustByEntity(EntityCombustByEntityEvent event) {}
+    public void onEntityExhaustion(EntityExhaustionEvent event) {
 
+    }
+
     @Override
-    public void onEntityDamage(EntityDamageEvent event) {}
+    public void onEntityExplode(EntityExplodeEvent event) {
+
+    }
 
     @Override
-    public void onEntityDamageByBlock(EntityDamageEvent event) {}
+    public void onEntityInteract(EntityInteractEvent event) {
 
+    }
+
     @Override
-    public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {}
+    public void onEntityPickupItem(EntityPickupItemEvent event) {
+
+    }
 
     @Override
-    public void onEntityDeath(EntityDeathEvent event) {}
+    public void onEntityPlace(EntityPlaceEvent event) {
 
+    }
+
     @Override
-    public void onEntityDropItem(EntityDropItemEvent event) {}
+    public void onEntityPortalEnter(EntityPortalEnterEvent event) {
+
+    }
 
     @Override
-    public void onEntityEnterBlock(EntityEnterBlockEvent event) {}
+    public void onEntityPortal(EntityPortalEvent event) {
 
+    }
+
     @Override
-    public void onEntityExplode(EntityExplodeEvent event) {}
+    public void onEntityPortalExit(EntityPortalEnterEvent event) {
+
+    }
 
     @Override
-    public void onEntityInteract(EntityInteractEvent event) {}
+    public void onEntityPoseChange(EntityPoseChangeEvent event) {
 
+    }
+
     @Override
-    public void onEntityPickupItem(EntityPickupItemEvent event) {}
+    public void onEntityPotionEffect(EntityPotionEffectEvent event) {
+
+    }
 
     @Override
-    public void onEntityPortal(EntityPortalEvent event) {}
+    public void onEntityRegainHealth(EntityRegainHealthEvent event) {
 
+    }
+
     @Override
-    public void onEntityPortalExit(EntityPortalExitEvent event) {}
+    public void onEntityResurrect(EntityResurrectEvent event) {
+
+    }
 
     @Override
-    public void onEntityPoseChange(EntityPoseChangeEvent event) {}
+    public void onEntityShootBow(EntityShootBowEvent event) {
 
+    }
+
     @Override
-    public void onEntityPotionEffect(EntityPotionEffectEvent event) {}
+    public void onEntitySpawn(EntitySpawnEvent event) {
+
+    }
 
     @Override
-    public void onEntityRegainHealth(EntityRegainHealthEvent event) {}
+    public void onEntitySpellCast(EntitySpellCastEvent event) {
 
+    }
+
     @Override
-    public void onEntityResurrect(EntityResurrectEvent event) {}
+    public void onEntityTame(EntityTameEvent event) {
+
+    }
 
     @Override
-    public void onEntityShootBow(EntityShootBowEvent event) {}
+    public void onEntityTarget(EntityTargetEvent event) {
 
+    }
+
     @Override
-    public void onEntitySpawn(EntitySpawnEvent event) {}
+    public void onEntityTargetLivingEntity(EntityTargetEvent event) {
+
+    }
 
     @Override
-    public void onEntityTame(EntityTameEvent event) {}
+    public void onEntityTeleport(EntityTeleportEvent event) {
 
+    }
+
     @Override
-    public void onEntityTarget(EntityTargetEvent event) {}
+    public void onEntityToggleGlide(EntityToggleGlideEvent event) {
+
+    }
 
     @Override
-    public void onEntityTargetLivingEntity(EntityTargetLivingEntityEvent event) {}
+    public void onEntityToggleSwim(EntityToggleSwimEvent event) {
 
+    }
+
     @Override
-    public void onEntityTeleport(EntityTeleportEvent event) {}
+    public void onEntityTransform(EntityTransformEvent event) {
+
+    }
 
     @Override
-    public void onEntityToggleGlide(EntityToggleGlideEvent event) {}
+    public void onEntityUnleash(EntityUnleashEvent event) {
 
+    }
+
     @Override
-    public void onEntityToggleSwim(EntityToggleSwimEvent event) {}
+    public void onExpBottle(ExpBottleEvent event) {
+
+    }
 
     @Override
-    public void onEntityTransform(EntityTransformEvent event) {}
+    public void onExplosionPrime(ExplosionPrimeEvent event) {
 
+    }
+
     @Override
-    public void onEntityUnleash(EntityUnleashEvent event) {}
+    public void onFireworkExplode(FireworkExplodeEvent event) {
+
+    }
 
     @Override
-    public void onExpBottle(ExpBottleEvent event) {}
+    public void onFoodLevelChange(FoodLevelChangeEvent event) {
 
+    }
+
     @Override
-    public void onExplosionPrime(ExplosionPrimeEvent event) {}
+    public void onHorseJump(HorseJumpEvent event) {
+
+    }
 
     @Override
-    public void onFireworkExplode(FireworkExplodeEvent event) {}
+    public void onItemDespawn(ItemDespawnEvent event) {
 
+    }
+
     @Override
-    public void onFluidLevelChange(FluidLevelChangeEvent event) {}
+    public void onItemMerge(ItemMergeEvent event) {
+
+    }
 
     @Override
-    public void onFoodLevelChange(FoodLevelChangeEvent event) {}
+    public void onItemSpawn(ItemSpawnEvent event) {
 
+    }
+
     @Override
-    public void onFurnaceBurn(FurnaceBurnEvent event) {}
+    public void onLingeringPotionSplash(LingeringPotionSplashEvent event) {
+
+    }
 
     @Override
-    public void onFurnaceExtract(FurnaceExtractEvent event) {}
+    public void onPiglinBarter(PiglinBarterEvent event) {
 
+    }
+
     @Override
-    public void onFurnaceSmelt(FurnaceSmeltEvent event) {}
+    public void onPigZap(PigZapEvent event) {
+
+    }
 
     @Override
-    public void onHanging(HangingEvent event) {}
+    public void onPigZombieAnger(PigZombieAngerEvent event) {
 
+    }
+
     @Override
-    public void onHangingBreak(HangingBreakEvent event) {}
+    public void onPlayerDeath(PlayerDeathEvent event) {
+
+    }
 
     @Override
-    public void onHangingBreakByEntity(HangingBreakByEntityEvent event) {}
+    public void onPlayerLeashEntity(PlayerLeashEntityEvent event) {
 
+    }
+
     @Override
-    public void onHangingPlace(HangingPlaceEvent event) {}
+    public void onPotionSplash(PotionSplashEvent event) {
+
+    }
 
     @Override
-    public void onHorseJump(HorseJumpEvent event) {}
+    public void onProjectileHit(ProjectileHitEvent event) {
 
+    }
+
     @Override
-    public void onInventory(InventoryEvent event) {}
+    public void onProjectileLaunch(ProjectileLaunchEvent event) {
+
+    }
 
     @Override
-    public void onInventoryClick(InventoryClickEvent event) {}
+    public void onSheepDyeWool(SheepDyeWoolEvent event) {
 
+    }
+
     @Override
-    public void onInventoryClose(InventoryCloseEvent event) {}
+    public void onSheepRegrowWool(SheepRegrowWoolEvent event) {
+
+    }
 
     @Override
-    public void onInventoryCreative(InventoryCreativeEvent event) {}
+    public void onSlimeSplit(SlimeSplitEvent event) {
 
+    }
+
     @Override
-    public void onInventoryDrag(InventoryDragEvent event) {}
+    public void onSpawnerSpawn(SpawnerSpawnEvent event) {
+
+    }
 
     @Override
-    public void onInventoryInteract(InventoryInteractEvent event) {}
+    public void onStriderTemperatureChange(StriderTemperatureChangeEvent event) {
 
+    }
+
     @Override
-    public void onInventoryMoveItem(InventoryMoveItemEvent event) {}
+    public void onVillagerAcquireTrade(VillagerAcquireTradeEvent event) {
+
+    }
 
     @Override
-    public void onInventoryOpen(InventoryOpenEvent event) {}
+    public void onVillagerCareerChange(VillagerCareerChangeEvent event) {
 
+    }
+
     @Override
-    public void onInventoryPickupItem(InventoryPickupItemEvent event) {}
+    public void onVillagerReplenishTrade(VillagerReplenishTradeEvent event) {
+
+    }
 
     @Override
-    public void onItemDespawn(ItemDespawnEvent event) {}
+    public void onHangingBreakByEntity(HangingBreakByEntityEvent event) {
 
+    }
+
     @Override
-    public void onItemMerge(ItemMergeEvent event) {}
+    public void onHangingBreak(HangingBreakEvent event) {
+
+    }
 
     @Override
-    public void onItemSpawn(ItemSpawnEvent event) {}
+    public void onHangingPlace(HangingPlaceEvent event) {
 
+    }
+
     @Override
-    public void onLeaveDecay(LeavesDecayEvent event) {}
+    public void onBrew(BrewEvent event) {
+
+    }
 
     @Override
-    public void onLightningStrike(LightningStrikeEvent event) {}
+    public void onBrewingStandFuel(BrewingStandFuelEvent event) {
 
+    }
+
     @Override
-    public void onLingeringPotionSplash(LingeringPotionSplashEvent event) {}
+    public void onCraftItem(CraftItemEvent event) {
+
+    }
 
     @Override
-    public void onMapInitialize(MapInitializeEvent event) {}
+    public void onFurnaceBurn(FurnaceBurnEvent event) {
 
+    }
+
     @Override
-    public void onMoistureChange(MoistureChangeEvent event) {}
+    public void onFurnaceExtract(FurnaceExtractEvent event) {
+
+    }
 
     @Override
-    public void onNotePlay(NotePlayEvent event) {}
+    public void onFurnaceSmelt(FurnaceSmeltEvent event) {
 
+    }
+
     @Override
-    public void onPigZap(PigZapEvent event) {}
+    public void onFurnaceStartSmelt(FurnaceStartSmeltEvent event) {
+
+    }
 
     @Override
-    public void onPigZombieAnger(PigZombieAngerEvent event) {}
+    public void onInventoryClick(InventoryClickEvent event) {
 
+    }
+
     @Override
-    public void onPlayer(PlayerEvent event) {}
+    public void onInventoryClose(InventoryCloseEvent event) {
+
+    }
 
     @Override
-    public void onPlayerAdvancementDone(PlayerAdvancementDoneEvent event) {}
+    public void onInventoryCreative(InventoryCreativeEvent event) {
 
+    }
+
     @Override
-    public void onPlayerAnimation(PlayerAnimationEvent event) {}
+    public void onInventoryDrag(InventoryDragEvent event) {
+
+    }
 
     @Override
-    public void onPlayerArmorStandManipulate(PlayerArmorStandManipulateEvent event) {}
+    public void onInventory(InventoryEvent event) {
 
+    }
+
     @Override
-    public void onPlayerBedEnter(PlayerBedEnterEvent event) {}
+    public void onInventoryMoveItem(InventoryMoveItemEvent event) {
+
+    }
 
     @Override
-    public void onPlayerBedLeave(PlayerBedLeaveEvent event) {}
+    public void onInventoryOpen(InventoryOpenEvent event) {
 
+    }
+
     @Override
-    public void onPlayerBucket(PlayerBucketEvent event) {}
+    public void onInventoryPickupItem(InventoryPickupItemEvent event) {
+
+    }
 
     @Override
-    public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {}
+    public void onPrepareAnvil(PrepareAnvilEvent event) {
 
+    }
+
     @Override
-    public void onPlayerBucketFill(PlayerBucketFillEvent event) {}
+    public void onPrepareItemCraft(PrepareItemCraftEvent event) {
+
+    }
 
     @Override
-    public void onPlayerChangedMainHand(PlayerChangedMainHandEvent event) {}
+    public void onPrepareSmithing(PrepareSmithingEvent event) {
 
+    }
+
     @Override
-    public void onPlayerChangedWorld(PlayerChangedWorldEvent event) {}
+    public void onSmithItem(SmithItemEvent event) {
+
+    }
 
     @Override
-    public void onPlayerChannel(PlayerChannelEvent event) {}
+    public void onTradeSelect(TradeSelectEvent event) {
 
+    }
+
     @Override
-    public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {}
+    public void onAsyncPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
+
+    }
 
     @Override
-    public void onPlayerCommandSend(PlayerCommandSendEvent event) {}
+    public void onPlayerAdvancementDone(PlayerAdvancementDoneEvent event) {
 
+    }
+
     @Override
-    public void onPlayerDeath(PlayerDeathEvent event) {}
+    public void onPlayerAnimation(PlayerAnimationEvent event) {
+
+    }
 
     @Override
-    public void onPlayerDropItem(PlayerDropItemEvent event) {}
+    public void onPlayerArmorStandManipulate(PlayerArmorStandManipulateEvent event) {
 
+    }
+
     @Override
-    public void onPlayerEditBook(PlayerEditBookEvent event) {}
+    public void onPlayerAttemptPickupItem(PlayerAttemptPickupItemEvent event) {
+
+    }
 
     @Override
-    public void onPlayerEggThrow(PlayerEggThrowEvent event) {}
+    public void onPlayerBedEnter(PlayerBedEnterEvent event) {
 
+    }
+
     @Override
-    public void onPlayerEntityUnleash(PlayerUnleashEntityEvent event) {}
+    public void onPlayerBedLeave(PlayerBedLeaveEvent event) {
+
+    }
 
     @Override
-    public void onPlayerExpChange(PlayerExpChangeEvent event) {}
+    public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
 
+    }
+
     @Override
-    public void onPlayerFish(PlayerFishEvent event) {}
+    public void onPlayerBucketEntity(PlayerBucketEntityEvent event) {
+
+    }
 
     @Override
-    public void onPlayerGameModeChange(PlayerGameModeChangeEvent event) {}
+    public void onPlayerBucketFill(PlayerBucketFillEvent event) {
 
+    }
+
     @Override
-    public void onPlayerInteract(PlayerInteractEvent event) {}
+    public void onPlayerChangedMainHand(PlayerChangedMainHandEvent event) {
+
+    }
 
     @Override
-    public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event) {}
+    public void onPlayerChangedWorld(PlayerChangedWorldEvent event) {
 
+    }
+
     @Override
-    public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {}
+    public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
+
+    }
 
     @Override
-    public void onPlayerItemBreak(PlayerItemBreakEvent event) {}
+    public void onPlayerCommandSend(PlayerCommandSendEvent event) {
 
+    }
+
     @Override
-    public void onPlayerItemConsume(PlayerItemConsumeEvent event) {}
+    public void onPlayerDropItem(PlayerDropItemEvent event) {
+
+    }
 
     @Override
-    public void onPlayerItemDamage(PlayerItemDamageEvent event) {}
+    public void onPlayerEditBook(PlayerEditBookEvent event) {
 
+    }
+
     @Override
-    public void onPlayerItemHeld(PlayerItemHeldEvent event) {}
+    public void onPlayerEggThrow(PlayerEggThrowEvent event) {
+
+    }
 
     @Override
-    public void onPlayerItemMend(PlayerItemMendEvent event) {}
+    public void onPlayerExpChange(PlayerExpChangeEvent event) {
 
+    }
+
     @Override
-    public void onPlayerJoin(PlayerJoinEvent event) {}
+    public void onPlayerFish(PlayerFishEvent event) {
+
+    }
 
     @Override
-    public void onPlayerKick(PlayerKickEvent event) {}
+    public void onPlayerGameModeChange(PlayerGameModeChangeEvent event) {
 
+    }
+
     @Override
-    public void onPlayerLeashEntity(PlayerLeashEntityEvent event) {}
+    public void onPlayerHarvestBlock(PlayerHarvestBlockEvent event) {
+
+    }
 
     @Override
-    public void onPlayerLevelChange(PlayerLevelChangeEvent event) {}
+    public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event) {
 
+    }
+
     @Override
-    public void onPlayerLocaleChange(PlayerLocaleChangeEvent event) {}
+    public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
+
+    }
 
     @Override
-    public void onPlayerLogin(PlayerLoginEvent event) {}
+    public void onPlayerInteract(PlayerInteractEvent event) {
 
+    }
+
     @Override
-    public void onPlayerMove(PlayerMoveEvent event) {}
+    public void onPlayerItemBreak(PlayerItemBreakEvent event) {
+
+    }
 
     @Override
-    public void onPlayerPickupArrow(PlayerPickupArrowEvent event) {}
+    public void onPlayerItemConsume(PlayerItemConsumeEvent event) {
 
+    }
+
     @Override
-    public void onPlayerQuit(PlayerQuitEvent event) {}
+    public void onPlayerItemDamage(PlayerItemDamageEvent event) {
+
+    }
 
     @Override
-    public void onPlayerRecipeDiscover(PlayerRecipeDiscoverEvent event) {}
+    public void onPlayerItemHeld(PlayerItemHeldEvent event) {
 
+    }
+
     @Override
-    public void onPlayerRegisterChannel(PlayerRegisterChannelEvent event) {}
+    public void onPlayerItemMend(PlayerItemMendEvent event) {
+
+    }
 
     @Override
-    public void onPlayerResourcePackStatus(PlayerResourcePackStatusEvent event) {}
+    public void onPlayerJoin(PlayerJoinEvent event) {
 
+    }
+
     @Override
-    public void onPlayerRespawn(PlayerRespawnEvent event) {}
+    public void onPlayerKick(PlayerKickEvent event) {
+
+    }
 
     @Override
-    public void onPlayerRiptide(PlayerRiptideEvent event) {}
+    public void onPlayerLevelChange(PlayerLevelChangeEvent event) {
 
+    }
+
     @Override
-    public void onPlayerShearEntity(PlayerShearEntityEvent event) {}
+    public void onPlayerLocaleChange(PlayerLocaleChangeEvent event) {
+
+    }
 
     @Override
-    public void onPlayerStatisticIncrement(PlayerStatisticIncrementEvent event) {}
+    public void onPlayerLogin(PlayerLoginEvent event) {
 
+    }
+
     @Override
-    public void onPlayerSwapHandItems(PlayerSwapHandItemsEvent event) {}
+    public void onPlayerMove(PlayerMoveEvent event) {
+
+    }
 
     @Override
-    public void onPlayerTakeLecternBook(PlayerTakeLecternBookEvent event) {}
+    public void onPlayerPickupArrow(PlayerPickupArrowEvent event) {
 
+    }
+
     @Override
-    public void onPlayerToggleFlight(PlayerToggleFlightEvent event) {}
+    public void onPlayerPortal(PlayerPortalEvent event) {
+
+    }
 
     @Override
-    public void onPlayerToggleSneak(PlayerToggleSneakEvent event) {}
+    public void onPlayerQuit(PlayerQuitEvent event) {
 
+    }
+
     @Override
-    public void onPlayerToggleSpring(PlayerToggleSprintEvent event) {}
+    public void onPlayerRecipeDiscover(PlayerRecipeDiscoverEvent event) {
+
+    }
 
     @Override
-    public void onPlayerUnregisterChannel(PlayerUnregisterChannelEvent event) {}
+    public void onPlayerRegisterChannel(PlayerRegisterChannelEvent event) {
 
+    }
+
     @Override
-    public void onPlayerVelocity(PlayerVelocityEvent event) {}
+    public void onPlayerResourcePackStatus(PlayerResourcePackStatusEvent event) {
+
+    }
 
     @Override
-    public void onPlugin(PluginEvent event) {}
+    public void onPlayerRespawn(PlayerRespawnEvent event) {
 
+    }
+
     @Override
-    public void onPluginDisable(PluginDisableEvent event) {}
+    public void onPlayerRiptide(PlayerRiptideEvent event) {
+
+    }
 
     @Override
-    public void onPluginEnable(PluginEnableEvent event) {}
+    public void onPlayerShearEntity(PlayerShearEntityEvent event) {
 
+    }
+
     @Override
-    public void onPortalCreate(PortalCreateEvent event) {}
+    public void onPlayerStatisticIncrement(PlayerStatisticIncrementEvent event) {
+
+    }
 
     @Override
-    public void onPotionSplash(PotionSplashEvent event) {}
+    public void onPlayerSwapHandItem(PlayerSwapHandItemsEvent event) {
 
+    }
+
     @Override
-    public void onPrepareAnvil(PrepareAnvilEvent event) {}
+    public void onPlayerTakeLecternBook(PlayerTakeLecternBookEvent event) {
+
+    }
 
     @Override
-    public void onPrepareItemCraft(PrepareItemCraftEvent event) {}
+    public void onPlayerTeleport(PlayerTeleportEvent event) {
 
+    }
+
     @Override
-    public void onPrepareItemEnchant(PrepareItemEnchantEvent event) {}
+    public void onPlayerToggleFlight(PlayerToggleFlightEvent event) {
+
+    }
 
     @Override
-    public void onProjectileHit(ProjectileHitEvent event) {}
+    public void onPlayerToggleSneak(PlayerToggleSneakEvent event) {
 
+    }
+
     @Override
-    public void onProjectileLaunch(ProjectileLaunchEvent event) {}
+    public void onPlayerToggleSprint(PlayerToggleSprintEvent event) {
+
+    }
 
     @Override
-    public void onRaid(RaidEvent event) {}
+    public void onPlayerUnleashEntity(PlayerUnleashEntityEvent event) {
 
+    }
+
     @Override
-    public void onRaidFinish(RaidFinishEvent event) {}
+    public void onPlayerUnregisterChannel(PlayerUnregisterChannelEvent event) {
+
+    }
 
     @Override
-    public void onRaidSpawnWave(RaidSpawnWaveEvent event) {}
+    public void onPlayerVelocity(PlayerVelocityEvent event) {
 
+    }
+
     @Override
-    public void onRaidStop(RaidStopEvent event) {}
+    public void onRaidFinish(RaidFinishEvent event) {
+
+    }
 
     @Override
-    public void onRaidTrigger(RaidTriggerEvent event) {}
+    public void onRaidSpawnWave(RaidSpawnWaveEvent event) {
 
+    }
+
     @Override
-    public void onRemoteServerCommand(RemoteServerCommandEvent event) {}
+    public void onRaidStop(RaidStopEvent event) {
+
+    }
 
     @Override
-    public void onServer(ServerEvent event) {}
+    public void onRaidTrigger(RaidTriggerEvent event) {
 
+    }
+
     @Override
-    public void onServerCommand(ServerCommandEvent event) {}
+    public void onBroadcastMessage(BroadcastMessageEvent event) {
+
+    }
 
     @Override
-    public void onServerListPing(ServerListPingEvent event) {}
+    public void onMapInitialize(MapInitializeEvent event) {
 
+    }
+
     @Override
-    public void onServerLoad(ServerLoadEvent event) {}
+    public void onPluginDisable(PluginDisableEvent event) {
+
+    }
 
     @Override
-    public void onService(ServiceEvent event) {}
+    public void onPluginEnable(PluginEnableEvent event) {
 
+    }
+
     @Override
-    public void onServiceRegister(ServiceRegisterEvent event) {}
+    public void onRemoteServerCommand(RemoteServerCommandEvent event) {
+
+    }
 
     @Override
-    public void onServiceUnregister(ServiceUnregisterEvent event) {}
+    public void onServerCommand(ServerCommandEvent event) {
 
+    }
+
     @Override
-    public void onSheepDyeWool(SheepDyeWoolEvent event) {}
+    public void onServerListPing(ServerListPingEvent event) {
+
+    }
 
     @Override
-    public void onSheepRegrowWool(SheepRegrowWoolEvent event) {}
+    public void onServerLoad(ServerLoadEvent event) {
 
+    }
+
     @Override
-    public void onSignChange(SignChangeEvent event) {}
+    public void onServiceRegister(ServiceRegisterEvent event) {
+
+    }
 
     @Override
-    public void onSlimeSplit(SlimeSplitEvent event) {}
+    public void onServiceUnregister(ServiceUnregisterEvent event) {
 
+    }
+
     @Override
-    public void onSpawnChange(SpawnChangeEvent event) {}
+    public void onTabComplete(TabCompleteEvent event) {
+
+    }
 
     @Override
-    public void onSpongeAbsorb(SpongeAbsorbEvent event) {}
+    public void onVehicleBlockCollision(VehicleBlockCollisionEvent event) {
 
+    }
+
     @Override
-    public void onStructureGrow(StructureGrowEvent event) {}
+    public void onVehicleCreate(VehicleCreateEvent event) {
+
+    }
 
     @Override
-    public void onTabComplete(TabCompleteEvent event) {}
+    public void onVehicleDamage(VehicleDamageEvent event) {
 
+    }
+
     @Override
-    public void onThunderChange(ThunderChangeEvent event) {}
+    public void onVehicleDestroy(VehicleDestroyEvent event) {
+
+    }
 
     @Override
-    public void onTimeSkip(TimeSkipEvent event) {}
+    public void onVehicleEnter(VehicleEnterEvent event) {
 
+    }
+
     @Override
-    public void onTradeSelect(TradeSelectEvent event) {}
+    public void onVehicleEntityCollision(VehicleEntityCollisionEvent event) {
+
+    }
 
     @Override
-    public void onVehicle(VehicleEvent event) {}
+    public void onVehicleExit(VehicleExitEvent event) {
 
+    }
+
     @Override
-    public void onVehicleBlockCollision(VehicleBlockCollisionEvent event) {}
+    public void onVehicleMove(VehicleMoveEvent event) {
+
+    }
 
     @Override
-    public void onVehicleCollision(VehicleCollisionEvent event) {}
+    public void onVehicleUpdate(VehicleUpdateEvent event) {
 
+    }
+
     @Override
-    public void onVehicleCreate(VehicleCreateEvent event) {}
+    public void onLightningStrike(LightningStrikeEvent event) {
+
+    }
 
     @Override
-    public void onVehicleDamage(VehicleDamageEvent event) {}
+    public void onThunderChange(ThunderChangeEvent event) {
 
+    }
+
     @Override
-    public void onVehicleDestroy(VehicleDestroyEvent event) {}
+    public void onWeatherChange(WeatherChangeEvent event) {
+
+    }
 
     @Override
-    public void onVehicleEnter(VehicleEnterEvent event) {}
+    public void onChunkLoad(ChunkLoadEvent event) {
 
+    }
+
     @Override
-    public void onVehicleEntityCollision(VehicleEntityCollisionEvent event) {}
+    public void onChunkPopulate(ChunkPopulateEvent event) {
+
+    }
 
     @Override
-    public void onVehicleExit(VehicleExitEvent event) {}
+    public void onChunkUnload(ChunkUnloadEvent event) {
 
+    }
+
     @Override
-    public void onVehicleMove(VehicleMoveEvent event) {}
+    public void onEntitiesLoad(EntitiesLoadEvent event) {
+
+    }
 
     @Override
-    public void onVehicleUpdate(VehicleUpdateEvent event) {}
+    public void onEntitiesUnload(EntitiesUnloadEvent event) {
 
+    }
+
     @Override
-    public void onVillagerAcquireTrade(VillagerAcquireTradeEvent event) {}
+    public void onGenericGame(GenericGameEvent event) {
+
+    }
 
     @Override
-    public void onVillagerCareerChange(VillagerCareerChangeEvent event) {}
+    public void onLootGenerate(LootGenerateEvent event) {
 
+    }
+
     @Override
-    public void onVillagerReplenishTrade(VillagerReplenishTradeEvent event) {}
+    public void onPortalCreate(PortalCreateEvent event) {
+
+    }
 
     @Override
-    public void onWeather(WeatherEvent event) {}
+    public void onSpawnChange(SpawnChangeEvent event) {
 
+    }
+
     @Override
-    public void onWeatherChange(WeatherChangeEvent event) {}
+    public void onStructureGrow(StructureGrowEvent event) {
+
+    }
 
     @Override
-    public void onWorld(WorldEvent event) {}
+    public void onTimeSkip(TimeSkipEvent event) {
 
+    }
+
     @Override
-    public void onWorldInit(WorldInitEvent event) {}
+    public void onWorldInit(WorldInitEvent event) {
+
+    }
 
     @Override
-    public void onWorldLoad(WorldLoadEvent event) {}
+    public void onWorldLoad(WorldLoadEvent event) {
 
+    }
+
     @Override
-    public void onWorldSave(WorldSaveEvent event) {}
+    public void onWorldSave(WorldSaveEvent event) {
 
+    }
+
     @Override
-    public void onWorldUnload(WorldUnloadEvent event) {}
+    public void onWorldUnload(WorldUnloadEvent event) {
+
+    }
 
 }
