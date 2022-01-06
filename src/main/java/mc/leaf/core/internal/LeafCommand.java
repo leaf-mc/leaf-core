@@ -80,7 +80,7 @@ public class LeafCommand extends PluginCommandImpl {
             builder.append(components.get(i));
 
             if (i + 1 != components.size()) {
-                builder.append(Component.text("---"));
+                builder.append(Component.newline()).append(Component.newline());
             }
         }
 
