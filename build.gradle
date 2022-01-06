@@ -45,7 +45,7 @@ publishing {
                 name = project.name
                 description = 'LeafCore is a library plugin offering tools for plugin developers, making some aspect of the plugin development way easier.'
 
-                url = 'https://github.com/alfgard/leaf-core'
+                url = 'https://github.com/leaf-mc/leaf-core'
 
                 licenses {
                     license {
@@ -62,9 +62,9 @@ publishing {
                 }
 
                 scm {
-                    connection = 'scm:git:github.com/alfgard/leaf-core.git'
-                    developerConnection = 'scm:git:ssh://github.com/alfgard/leaf-core.git'
-                    url = 'https://github.com/alfgard/leaf-core/tree/main'
+                    connection = 'scm:git:github.com/leaf-mc/leaf-core.git'
+                    developerConnection = 'scm:git:ssh://github.com/leaf-mc/leaf-core.git'
+                    url = 'https://github.com/leaf-mc/leaf-core/tree/main'
                 }
             }
         }
