@@ -10,6 +10,7 @@ import mc.leaf.core.services.completion.SyntaxContainer;
 import mc.leaf.core.services.completion.interfaces.ISyntax;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -51,7 +52,11 @@ public final class LeafCore extends JavaPlugin implements ILeafCore {
     @Override
     public void onDisable() {
 
-        LeafCore.this.modules.forEach(ILeafModule::onDisable);
+        this.modules.forEach(module -> {
+            module.onDisable();
+            this.bridge.unregister(module);
+        });
+        HandlerList.unregisterAll(this.bridge);
         this.dynamicOptions = null;
         this.bridge         = null;
         this.modules.clear();
