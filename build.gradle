@@ -3,8 +3,8 @@ import java.nio.charset.StandardCharsets
 plugins {
     id 'java-library'
     id 'maven-publish'
-    id 'com.github.ben-manes.versions' version '0.39.0'
-    id 'org.ajoberstar.reckon' version '0.13.0'
+    id 'com.github.ben-manes.versions' version '0.41.0'
+    id 'org.ajoberstar.reckon' version '0.13.1'
 }
 
 def generalCharset = StandardCharsets.UTF_8.name();
@@ -74,7 +74,7 @@ publishing {
 dependencies {
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.8.2'
     compileOnly group: 'io.papermc.paper', name: 'paper-api', version: '1.18.1-R0.1-SNAPSHOT'
-    implementation group: 'org.jetbrains', name: 'annotations', version: '22.0.0'
+    implementation group: 'org.jetbrains', name: 'annotations', version: '23.0.0'
 }
 
 processResources {
