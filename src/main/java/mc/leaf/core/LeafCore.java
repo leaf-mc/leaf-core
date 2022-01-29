@@ -1,27 +1,25 @@
 package mc.leaf.core;
 
-import mc.leaf.core.events.EventBridge;
-import mc.leaf.core.events.interfaces.IEventBridge;
 import mc.leaf.core.interfaces.ILeafCore;
 import mc.leaf.core.interfaces.ILeafModule;
+import mc.leaf.core.interfaces.impl.LeafModule;
 import mc.leaf.core.internal.LeafCommand;
 import mc.leaf.core.internal.LeafInternalListener;
 import mc.leaf.core.services.completion.SyntaxContainer;
 import mc.leaf.core.services.completion.interfaces.ISyntax;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public final class LeafCore extends JavaPlugin implements ILeafCore {
 
     private final List<ILeafModule>         modules = new ArrayList<>();
     private       Map<String, List<String>> dynamicOptions;
-    private       EventBridge               bridge;
 
     /**
      * Create a {@link SyntaxContainer} for the provided {@link List} of {@link String}
@@ -38,27 +36,22 @@ public final class LeafCore extends JavaPlugin implements ILeafCore {
                 .collect(Collectors.toList()));
     }
 
-    /**
-     * Retrieve an implementation instance of {@link IEventBridge}.
-     *
-     * @return An instance implementing {@link IEventBridge}.
-     */
-    @Override
-    public IEventBridge getEventBridge() {
-
-        return this.bridge;
-    }
-
     @Override
     public void onDisable() {
 
         this.modules.forEach(module -> {
-            module.onDisable();
-            this.bridge.unregister(module);
+            String moduleName = module.getName();
+            Logger logger     = this.getLogger();
+
+            logger.info("Disabling " + moduleName + "...");
+
+            if (module.disable(false)) {
+                logger.info("Successfully disabled " + moduleName);
+            } else {
+                logger.warning("Unable to disable " + moduleName);
+            }
         });
-        HandlerList.unregisterAll(this.bridge);
         this.dynamicOptions = null;
-        this.bridge         = null;
         this.modules.clear();
     }
 
@@ -66,11 +59,7 @@ public final class LeafCore extends JavaPlugin implements ILeafCore {
     public void onEnable() {
 
         this.dynamicOptions = new HashMap<>();
-        this.bridge         = new EventBridge();
-
         new LeafCommand(this).register("leaf");
-
-        Bukkit.getPluginManager().registerEvents(this.bridge, this);
         Bukkit.getPluginManager().registerEvents(new LeafInternalListener(this), this);
 
         this.registerDynamicOptions("player", Bukkit.getOnlinePlayers().stream().map(Player::getName).toList());
@@ -85,7 +74,20 @@ public final class LeafCore extends JavaPlugin implements ILeafCore {
             @Override
             public void run() {
 
-                LeafCore.this.modules.forEach(ILeafModule::onEnable);
+                Logger logger = LeafCore.this.getLogger();
+
+                logger.info("Enabling modules...");
+
+                for (ILeafModule module : LeafCore.this.modules) {
+                    String moduleName = module.getName();
+
+                    logger.info(" Enabling " + moduleName + "...");
+                    if (module.enable()) {
+                        logger.info(" Successfully enabled " + moduleName);
+                    } else {
+                        logger.warning(" Unable to enable " + moduleName);
+                    }
+                }
             }
         };
         runnable.runTaskLater(this, 1L);
@@ -104,7 +106,7 @@ public final class LeafCore extends JavaPlugin implements ILeafCore {
     }
 
     @Override
-    public void registerModule(ILeafModule module) {
+    public void registerModule(LeafModule module) {
 
         this.modules.add(module);
         this.registerDynamicOptions("modules", this.modules.stream().map(ILeafModule::getName).toList());

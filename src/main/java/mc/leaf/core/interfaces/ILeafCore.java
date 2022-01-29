@@ -1,6 +1,6 @@
 package mc.leaf.core.interfaces;
 
-import mc.leaf.core.events.interfaces.IEventBridge;
+import mc.leaf.core.interfaces.impl.LeafModule;
 import mc.leaf.core.services.completion.SyntaxContainer;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -17,13 +17,6 @@ public interface ILeafCore {
      * @return A {@link SyntaxContainer}.
      */
     SyntaxContainer createContainer(List<String> items);
-
-    /**
-     * Retrieve an implementation instance of {@link IEventBridge}.
-     *
-     * @return An instance implementing {@link IEventBridge}.
-     */
-    IEventBridge getEventBridge();
 
     /**
      * Register a new dynamic option for command completion. If the name provided have already been registered, the list
@@ -49,7 +42,7 @@ public interface ILeafCore {
      * @param module
      *         The module.
      */
-    void registerModule(ILeafModule module);
+    void registerModule(LeafModule module);
 
     /**
      * Retrieve this {@link ILeafCore} in its {@link JavaPlugin} instance.
