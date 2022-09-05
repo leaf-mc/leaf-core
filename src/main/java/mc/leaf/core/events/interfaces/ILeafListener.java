@@ -5,6 +5,7 @@ import com.destroystokyo.paper.event.block.BeaconEffectEvent;
 import com.destroystokyo.paper.event.block.BlockDestroyEvent;
 import com.destroystokyo.paper.event.block.TNTPrimeEvent;
 import com.destroystokyo.paper.event.entity.*;
+import com.destroystokyo.paper.event.inventory.PrepareGrindstoneEvent;
 import com.destroystokyo.paper.event.inventory.PrepareResultEvent;
 import com.destroystokyo.paper.event.player.*;
 import com.destroystokyo.paper.event.profile.*;
@@ -16,6 +17,7 @@ import io.papermc.paper.event.packet.PlayerChunkUnloadEvent;
 import io.papermc.paper.event.player.*;
 import io.papermc.paper.event.server.ServerResourcesReloadedEvent;
 import io.papermc.paper.event.world.StructureLocateEvent;
+import io.papermc.paper.event.world.StructuresLocateEvent;
 import io.papermc.paper.event.world.WorldGameRuleChangeEvent;
 import io.papermc.paper.event.world.border.WorldBorderBoundsChangeEvent;
 import io.papermc.paper.event.world.border.WorldBorderBoundsChangeFinishEvent;
@@ -42,6 +44,10 @@ import org.bukkit.event.weather.LightningStrikeEvent;
 import org.bukkit.event.weather.ThunderChangeEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.event.world.*;
+import org.jetbrains.annotations.ApiStatus;
+import org.spigotmc.event.entity.EntityDismountEvent;
+import org.spigotmc.event.entity.EntityMountEvent;
+import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
 /**
  * Interface providing every listener available on minecraft. You may extend {@link mc.leaf.core.events.LeafListener}
@@ -108,6 +114,9 @@ public interface ILeafListener extends Listener {
 
     void onEntityTeleportEndGateway(EntityTeleportEndGatewayEvent event);
 
+    @Deprecated
+    void onEntityTransformed(EntityTransformedEvent event);
+
     void onEntityZap(EntityZapEvent event);
 
     void onExperienceOrbMerge(ExperienceOrbMergeEvent event);
@@ -152,20 +161,34 @@ public interface ILeafListener extends Listener {
 
     void onEntityDamageItem(EntityDamageItemEvent event);
 
+    void onEntityDye(EntityDyeEvent event);
+
     void onEntityInsideBlock(EntityInsideBlockEvent event);
 
     void onEntityLoadCrossbow(EntityLoadCrossbowEvent event);
 
     void onEntityMove(EntityMoveEvent event);
 
+    void onEntityPortalReady(EntityPortalReadyEvent event);
+
     void onPufferFishStateChange(PufferFishStateChangeEvent event);
+
+    void onTameableDeathMessage(TameableDeathMessageEvent event);
+
+    void onWardenAngerChange(WardenAngerChangeEvent event);
 
     // </editor-fold>
     // <editor-fold desc="inventory">
+    @Deprecated
+    void onPrepareGrindstone(PrepareGrindstoneEvent event);
+
     void onPrepareResult(PrepareResultEvent event);
 
     // </editor-fold>
     // <editor-fold desc="player">
+    @Deprecated
+    void onIllegalPacked(IllegalPacketEvent event);
+
     void onPlayerAdvancementCriterionGrant(PlayerAdvancementCriterionGrantEvent event);
 
     void onPlayerArmorChange(PlayerArmorChangeEvent event);
@@ -179,6 +202,9 @@ public interface ILeafListener extends Listener {
     void onPlayerElytraBoost(PlayerElytraBoostEvent event);
 
     void onPlayerHandshake(PlayerHandshakeEvent event);
+
+    @Deprecated
+    void onPlayerInitialSpawn(PlayerInitialSpawnEvent event);
 
     void onPlayerJumpEvent(PlayerJumpEvent event);
 
@@ -202,7 +228,16 @@ public interface ILeafListener extends Listener {
 
     void onPlayerUseUnknownEntity(PlayerUseUnknownEntityEvent event);
 
+    @ApiStatus.Experimental
+    void onAsyncChatCommandDecorate(AsyncChatCommandDecorateEvent event);
+
+    @ApiStatus.Experimental
+    void onAsyncChatDecorate(AsyncChatDecorateEvent event);
+
     void onAsyncChat(AsyncChatEvent event);
+
+    @Deprecated
+    void onChat(ChatEvent event);
 
     void onPlayerArmSwingEvent(PlayerArmSwingEvent event);
 
@@ -229,6 +264,8 @@ public interface ILeafListener extends Listener {
     void onPlayerSignCommandPreprocess(PlayerSignCommandPreprocessEvent event);
 
     void onPlayerStonecutterRecipeSelect(PlayerStonecutterRecipeSelectEvent event);
+
+    void onPlayerStopUsingItem(PlayerStopUsingItemEvent event);
 
     void onPlayerTrade(PlayerTradeEvent event);
 
@@ -276,7 +313,10 @@ public interface ILeafListener extends Listener {
 
     void onWorldBoardCenterChange(WorldBorderCenterChangeEvent event);
 
+    @Deprecated(forRemoval = true)
     void onStructureLocate(StructureLocateEvent event);
+
+    void onStructuresLocate(StructuresLocateEvent event);
 
     void onWorldGameRuleChange(WorldGameRuleChangeEvent event);
 
@@ -291,6 +331,8 @@ public interface ILeafListener extends Listener {
     void onBlockCanBuild(BlockCanBuildEvent event);
 
     void onBlockCook(BlockCookEvent event);
+
+    void onBlockDamageAbort(BlockDamageAbortEvent event);
 
     void onBlockDamage(BlockDamageEvent event);
 
@@ -388,6 +430,9 @@ public interface ILeafListener extends Listener {
 
     void onEntityCombust(EntityCombustEvent event);
 
+    @Deprecated
+    void onEntityCreatePortal(EntityCreatePortalEvent event);
+
     void onEntityDamageByBlock(EntityDamageByBlockEvent event);
 
     void onEntityDamageByEntity(EntityDamageByEntityEvent event);
@@ -416,7 +461,7 @@ public interface ILeafListener extends Listener {
 
     void onEntityPortal(EntityPortalEvent event);
 
-    void onEntityPortalExit(EntityPortalEnterEvent event);
+    void onEntityPortalExit(EntityPortalExitEvent event);
 
     void onEntityPoseChange(EntityPoseChangeEvent event);
 
@@ -436,7 +481,7 @@ public interface ILeafListener extends Listener {
 
     void onEntityTarget(EntityTargetEvent event);
 
-    void onEntityTargetLivingEntity(EntityTargetEvent event);
+    void onEntityTargetLivingEntity(EntityTargetLivingEntityEvent event);
 
     void onEntityTeleport(EntityTeleportEvent event);
 
@@ -550,6 +595,12 @@ public interface ILeafListener extends Listener {
 
     // </editor-fold>
     // <editor-fold desc="player">
+    @Deprecated
+    void onAsyncPlayerChat(AsyncPlayerChatEvent event);
+
+    @Deprecated
+    void onAsyncPlayerChatPreview(AsyncPlayerChatPreviewEvent event);
+
     void onAsyncPlayerPreLogin(AsyncPlayerPreLoginEvent event);
 
     void onPlayerAdvancementDone(PlayerAdvancementDoneEvent event);
@@ -570,9 +621,18 @@ public interface ILeafListener extends Listener {
 
     void onPlayerBucketFill(PlayerBucketFillEvent event);
 
+    @Deprecated
+    void onPlayerBucketFish(PlayerBucketFishEvent event);
+
     void onPlayerChangedMainHand(PlayerChangedMainHandEvent event);
 
     void onPlayerChangedWorld(PlayerChangedWorldEvent event);
+
+    @Deprecated
+    void onPlayerChat(PlayerChatEvent event);
+
+    @Deprecated
+    void onPlayerChatTabComplete(PlayerChatTabCompleteEvent event);
 
     void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event);
 
@@ -591,6 +651,9 @@ public interface ILeafListener extends Listener {
     void onPlayerGameModeChange(PlayerGameModeChangeEvent event);
 
     void onPlayerHarvestBlock(PlayerHarvestBlockEvent event);
+
+    @ApiStatus.Experimental
+    void onPlayerHideEntity(PlayerHideEntityEvent event);
 
     void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event);
 
@@ -622,7 +685,13 @@ public interface ILeafListener extends Listener {
 
     void onPlayerPickupArrow(PlayerPickupArrowEvent event);
 
+    @Deprecated
+    void onPlayerPickupItem(PlayerPickupItemEvent event);
+
     void onPlayerPortal(PlayerPortalEvent event);
+
+    @Deprecated
+    void onPlayerPreLogin(PlayerPreLoginEvent event);
 
     void onPlayerQuit(PlayerQuitEvent event);
 
@@ -637,6 +706,9 @@ public interface ILeafListener extends Listener {
     void onPlayerRiptide(PlayerRiptideEvent event);
 
     void onPlayerShearEntity(PlayerShearEntityEvent event);
+
+    @ApiStatus.Experimental
+    void onPlayerShowEntity(PlayerShowEntityEvent event);
 
     void onPlayerStatisticIncrement(PlayerStatisticIncrementEvent event);
 
@@ -751,6 +823,18 @@ public interface ILeafListener extends Listener {
     void onWorldSave(WorldSaveEvent event);
 
     void onWorldUnload(WorldUnloadEvent event);
+
+    // </editor-fold>
+    // </editor-fold>
+    // <editor-fold desc="Spigot Events">
+    // <editor-fold desc="entity">
+    void onEntityDismount(EntityDismountEvent event);
+
+    void onEntityMount(EntityMountEvent event);
+
+    // </editor-fold>
+    // <editor-fold desc="player">
+    void onPlayerSpawnLocation(PlayerSpawnLocationEvent event);
     // </editor-fold>
     // </editor-fold>
 }
