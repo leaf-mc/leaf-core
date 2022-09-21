@@ -1,10 +1,12 @@
 package mc.leaf.core.interfaces;
 
+import mc.leaf.core.api.command.interfaces.ArgumentConverter;
 import mc.leaf.core.interfaces.impl.LeafModule;
 import mc.leaf.core.services.completion.SyntaxContainer;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ILeafCore {
 
@@ -50,5 +52,22 @@ public interface ILeafCore {
      * @return A {@link JavaPlugin}
      */
     JavaPlugin asPlugin();
+
+    /**
+     * Register a new {@link ArgumentConverter} to use.
+     *
+     * @param clazz
+     *         The class to map.
+     * @param converter
+     *         The converter to register.
+     */
+    <T> void registerConverter(Class<T> clazz, ArgumentConverter<T> converter);
+
+    /**
+     * Retrieve all registered {@link ArgumentConverter}.
+     *
+     * @return A Map associating each class to its converter.
+     */
+    Map<?, ArgumentConverter<?>> getConverters();
 
 }

@@ -1,5 +1,11 @@
 package mc.leaf.core;
 
+import mc.leaf.core.api.command.converters.PassThroughConverter;
+import mc.leaf.core.api.command.converters.bukkit.PlayerConverter;
+import mc.leaf.core.api.command.converters.bukkit.WorldConverter;
+import mc.leaf.core.api.command.converters.types.BooleanConverter;
+import mc.leaf.core.api.command.converters.types.IntegerConverter;
+import mc.leaf.core.api.command.interfaces.ArgumentConverter;
 import mc.leaf.core.interfaces.ILeafCore;
 import mc.leaf.core.interfaces.ILeafModule;
 import mc.leaf.core.interfaces.impl.LeafModule;
@@ -8,6 +14,7 @@ import mc.leaf.core.internal.LeafInternalListener;
 import mc.leaf.core.services.completion.SyntaxContainer;
 import mc.leaf.core.services.completion.interfaces.ISyntax;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -18,8 +25,9 @@ import java.util.stream.Collectors;
 
 public final class LeafCore extends JavaPlugin implements ILeafCore {
 
-    private final List<ILeafModule>         modules = new ArrayList<>();
-    private       Map<String, List<String>> dynamicOptions;
+    private final List<ILeafModule>                   modules = new ArrayList<>();
+    private       Map<String, List<String>>           dynamicOptions;
+    private       Map<Class<?>, ArgumentConverter<?>> converterMap;
 
     /**
      * Create a {@link SyntaxContainer} for the provided {@link List} of {@link String}
@@ -33,7 +41,7 @@ public final class LeafCore extends JavaPlugin implements ILeafCore {
     public SyntaxContainer createContainer(List<String> items) {
 
         return new SyntaxContainer(items.stream().map(item -> ISyntax.getSyntax(item, this.dynamicOptions))
-                .collect(Collectors.toList()));
+                                        .collect(Collectors.toList()));
     }
 
     @Override
@@ -52,6 +60,8 @@ public final class LeafCore extends JavaPlugin implements ILeafCore {
             }
         });
         this.dynamicOptions = null;
+        this.converterMap   = null;
+
         this.modules.clear();
     }
 
@@ -59,6 +69,8 @@ public final class LeafCore extends JavaPlugin implements ILeafCore {
     public void onEnable() {
 
         this.dynamicOptions = new HashMap<>();
+        this.converterMap   = new HashMap<>();
+
         new LeafCommand(this).register("leaf");
         Bukkit.getPluginManager().registerEvents(new LeafInternalListener(this), this);
 
@@ -68,6 +80,14 @@ public final class LeafCore extends JavaPlugin implements ILeafCore {
         this.registerDynamicOptions("booleanState", Arrays.asList("true", "false"));
         this.registerDynamicOptions("namedState", Arrays.asList("on", "off"));
         this.registerDynamicOptions("numState", Arrays.asList("1", "0"));
+
+        this.registerConverter(String.class, new PassThroughConverter());
+        this.registerConverter(Integer.class, new IntegerConverter());
+        this.registerConverter(int.class, new IntegerConverter());
+        this.registerConverter(World.class, new WorldConverter());
+        this.registerConverter(Player.class, new PlayerConverter());
+        this.registerConverter(Boolean.class, new BooleanConverter());
+        this.registerConverter(boolean.class, new BooleanConverter());
 
         BukkitRunnable runnable = new BukkitRunnable() {
 
@@ -110,6 +130,31 @@ public final class LeafCore extends JavaPlugin implements ILeafCore {
 
         this.modules.add(module);
         this.registerDynamicOptions("modules", this.modules.stream().map(ILeafModule::getName).toList());
+    }
+
+    /**
+     * Register a new {@link ArgumentConverter} to use.
+     *
+     * @param clazz
+     *         The class to map.
+     * @param converter
+     *         The converter to register.
+     */
+    @Override
+    public <T> void registerConverter(Class<T> clazz, ArgumentConverter<T> converter) {
+
+        this.converterMap.put(clazz, converter);
+    }
+
+    /**
+     * Retrieve all registered {@link ArgumentConverter}.
+     *
+     * @return A Map associating each class to its converter.
+     */
+    @Override
+    public Map<?, ArgumentConverter<?>> getConverters() {
+
+        return this.converterMap;
     }
 
     /**

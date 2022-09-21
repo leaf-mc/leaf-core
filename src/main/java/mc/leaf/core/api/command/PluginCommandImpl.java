@@ -5,7 +5,6 @@ import mc.leaf.core.api.command.annotations.Runnable;
 import mc.leaf.core.api.command.annotations.Sender;
 import mc.leaf.core.api.command.exceptions.CommandException;
 import mc.leaf.core.api.command.exceptions.*;
-import mc.leaf.core.api.command.interfaces.IParameterConverter;
 import mc.leaf.core.api.command.interfaces.IPluginCommand;
 import mc.leaf.core.interfaces.ILeafCore;
 import mc.leaf.core.services.completion.CompletionServiceImpl;
@@ -17,7 +16,6 @@ import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
@@ -53,7 +51,7 @@ public class PluginCommandImpl implements IPluginCommand {
         }
     }
 
-    private static List<Object> generateParameterList(IMatchingResult<Method> matchingResult, Method method, CommandSender sender) {
+    private List<Object> generateParameterList(IMatchingResult<Method> matchingResult, Method method, CommandSender sender) {
 
         Runnable     runnable         = method.getAnnotation(Runnable.class);
         List<Object> methodParameters = new ArrayList<>();
@@ -76,14 +74,13 @@ public class PluginCommandImpl implements IPluginCommand {
             } else if (parameter.isAnnotationPresent(Param.class)) {
                 Param  param = parameter.getAnnotation(Param.class);
                 String name  = param.value().isEmpty() ? parameter.getName() : param.value();
-
-                Class<? extends IParameterConverter<String, ?>> converter = param.converter();
                 try {
-                    Constructor<? extends IParameterConverter<String, ?>> constructor = converter.getConstructor();
-                    IParameterConverter<String, ?>                        pConverter  = constructor.newInstance();
-                    methodParameters.add(pConverter.convert(matchingResult.getParameter(name)));
+                    Object converted = this.core.getConverters()
+                                                .get(parameter.getType())
+                                                .convert(matchingResult.getParameter(name));
+                    methodParameters.add(converted);
                 } catch (Exception e) {
-                    throw new ConfigurationException(String.format("The `%s` parameter is wrongly configured: Unable to create or use the provided converter.", name));
+                    throw new ConfigurationException(String.format("The `%s` parameter is wrongly configured: Unable to create or use the provided converter.", name), e);
                 }
             }
         }
@@ -115,7 +112,7 @@ public class PluginCommandImpl implements IPluginCommand {
     private IMatchingResult<Method> getMatch(String... args) {
 
         return this.getCompletionService().getMatchingIdentifier(String.join(" ", args))
-                .orElseThrow(() -> new SyntaxException("Command not found. Please check your syntax."));
+                   .orElseThrow(() -> new SyntaxException("Command not found. Please check your syntax."));
     }
 
     @Override
@@ -150,11 +147,11 @@ public class PluginCommandImpl implements IPluginCommand {
             Method                  exec           = matchingResult.getIdentifier();
             Runnable                runnable       = exec.getAnnotation(Runnable.class);
             PluginCommandImpl.validateExecutableStatus(sender, runnable);
-            List<Object> parameters = PluginCommandImpl.generateParameterList(matchingResult, exec, sender);
+            List<Object> parameters = this.generateParameterList(matchingResult, exec, sender);
             this.call(exec, parameters);
         } catch (CommandException e) {
             Bukkit.getLogger().severe(String
-                    .format("[LeafCore] An error occurred while handling the '%s' command: %s", label, e.getMessage()));
+                                              .format("[LeafCore] An error occurred while handling the '%s' command: %s", label, e.getMessage()));
             this.handle(e, sender);
         }
         return true;

@@ -1,8 +1,5 @@
 package mc.leaf.core.api.command.annotations;
 
-import mc.leaf.core.api.command.converters.PassThroughConverter;
-import mc.leaf.core.api.command.interfaces.IParameterConverter;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -19,7 +16,5 @@ import java.lang.annotation.Target;
 public @interface Param {
 
     String value() default "";
-
-    Class<? extends IParameterConverter<String, ?>> converter() default PassThroughConverter.class;
 
 }

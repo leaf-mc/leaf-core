@@ -1,10 +1,28 @@
 package mc.leaf.core.api.command.converters;
 
-import mc.leaf.core.api.command.interfaces.IParameterConverter;
+import mc.leaf.core.api.command.interfaces.ArgumentConverter;
+import org.jetbrains.annotations.NotNull;
 
-public class PassThroughConverter implements IParameterConverter<String, String> {
+/**
+ * Default converter for all arguments. The output will be the same as the input.
+ *
+ * @author alexpado
+ */
+public class PassThroughConverter implements ArgumentConverter<String> {
+
+    /**
+     * Return the value provided without any mutation.
+     *
+     * @param input
+     *         The value to return
+     *
+     * @return The value provided
+     */
     @Override
-    public String convert(String in) {
-        return in;
+    @NotNull
+    public String convert(String input) {
+
+        return input;
     }
+
 }

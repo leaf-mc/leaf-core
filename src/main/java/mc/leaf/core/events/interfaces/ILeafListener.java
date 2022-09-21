@@ -55,7 +55,7 @@ import org.spigotmc.event.player.PlayerSpawnLocationEvent;
  *
  * @author alexpado
  */
-@SuppressWarnings("ClassWithTooManyMethods")
+@SuppressWarnings({"ClassWithTooManyMethods", "EmptyMethod", "removal", "UnstableApiUsage", "unused"})
 public interface ILeafListener extends Listener {
 
     // <editor-fold desc="Paper Events">
