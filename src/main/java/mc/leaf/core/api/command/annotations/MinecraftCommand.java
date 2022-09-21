@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface Runnable {
+public @interface MinecraftCommand {
 
     /**
      * Define the syntax string for the annotated command. This syntax will be then used by the {@link

@@ -2,7 +2,7 @@ package mc.leaf.core.internal;
 
 import mc.leaf.core.api.command.PluginCommandImpl;
 import mc.leaf.core.api.command.annotations.Param;
-import mc.leaf.core.api.command.annotations.Runnable;
+import mc.leaf.core.api.command.annotations.MinecraftCommand;
 import mc.leaf.core.api.command.annotations.Sender;
 import mc.leaf.core.interfaces.ILeafCore;
 import mc.leaf.core.interfaces.ILeafModule;
@@ -25,7 +25,7 @@ public class LeafCommand extends PluginCommandImpl {
         super(core);
     }
 
-    @Runnable(value = "", allowConsole = true, allowCommandBlock = true)
+    @MinecraftCommand(value = "", allowConsole = true, allowCommandBlock = true)
     public void noArgs(@Sender CommandSender sender) {
 
         sender.sendMessage(String.format("%s Plugin version %s", PluginCommandImpl.PREFIX, this.getCore()
@@ -33,7 +33,7 @@ public class LeafCommand extends PluginCommandImpl {
 
     }
 
-    @Runnable(value = "modules", allowConsole = true)
+    @MinecraftCommand(value = "modules", allowConsole = true)
     public void getLoadedModules(@Sender CommandSender sender) {
 
         if (this.getCore().getLeafModules().isEmpty()) {
@@ -87,7 +87,7 @@ public class LeafCommand extends PluginCommandImpl {
         sender.sendMessage(builder.asComponent());
     }
 
-    @Runnable("modules {modules} {actionState}")
+    @MinecraftCommand("modules {modules} {actionState}")
     public void switchModuleState(@Sender CommandSender sender, @Param String modules, @Param String actionState) {
 
         Optional<ILeafModule> moduleSearch = this.getCore().getLeafModules().stream()

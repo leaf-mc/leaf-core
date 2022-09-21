@@ -1,7 +1,7 @@
 package mc.leaf.core.api.command;
 
 import mc.leaf.core.api.command.annotations.Param;
-import mc.leaf.core.api.command.annotations.Runnable;
+import mc.leaf.core.api.command.annotations.MinecraftCommand;
 import mc.leaf.core.api.command.annotations.Sender;
 import mc.leaf.core.api.command.exceptions.CommandException;
 import mc.leaf.core.api.command.exceptions.*;
@@ -35,26 +35,26 @@ public class PluginCommandImpl implements IPluginCommand {
         this.core = core;
     }
 
-    private static void validateExecutableStatus(CommandSender sender, Runnable runnable) {
+    private static void validateExecutableStatus(CommandSender sender, MinecraftCommand minecraftCommand) {
 
-        if (sender instanceof ConsoleCommandSender && !runnable.allowConsole()) {
+        if (sender instanceof ConsoleCommandSender && !minecraftCommand.allowConsole()) {
             throw new IllegalCommandSenderException("Running this command as console isn't supported.");
-        } else if (sender instanceof BlockCommandSender && !runnable.allowCommandBlock()) {
+        } else if (sender instanceof BlockCommandSender && !minecraftCommand.allowCommandBlock()) {
             throw new IllegalCommandSenderException("Running this command in a command block isn't supported.");
-        } else if (sender instanceof Player && !runnable.allowPlayer()) {
+        } else if (sender instanceof Player && !minecraftCommand.allowPlayer()) {
             throw new IllegalCommandSenderException("Running this command as player isn't supported.");
         }
 
-        if ((runnable.opOnly() && !sender.isOp()) || (!runnable.permission().isEmpty() && !sender
-                .hasPermission(runnable.permission()))) {
+        if ((minecraftCommand.opOnly() && !sender.isOp()) || (!minecraftCommand.permission().isEmpty() && !sender
+                .hasPermission(minecraftCommand.permission()))) {
             throw new PermissionException("You do not have the permission to do this.");
         }
     }
 
     private List<Object> generateParameterList(IMatchingResult<Method> matchingResult, Method method, CommandSender sender) {
 
-        Runnable     runnable         = method.getAnnotation(Runnable.class);
-        List<Object> methodParameters = new ArrayList<>();
+        MinecraftCommand minecraftCommand = method.getAnnotation(MinecraftCommand.class);
+        List<Object>     methodParameters = new ArrayList<>();
 
         List<Class<?>> consoleClasses = Arrays.asList(CommandSender.class, ConsoleCommandSender.class);
         List<Class<?>> blockClasses   = Arrays.asList(CommandSender.class, BlockCommandSender.class);
@@ -62,9 +62,9 @@ public class PluginCommandImpl implements IPluginCommand {
 
         for (Parameter parameter : method.getParameters()) {
             if (parameter.isAnnotationPresent(Sender.class)) {
-                boolean console = !runnable.allowConsole() || consoleClasses.contains(parameter.getType());
-                boolean block   = !runnable.allowCommandBlock() || blockClasses.contains(parameter.getType());
-                boolean player  = !runnable.allowPlayer() || playerClasses.contains(parameter.getType());
+                boolean console = !minecraftCommand.allowConsole() || consoleClasses.contains(parameter.getType());
+                boolean block   = !minecraftCommand.allowCommandBlock() || blockClasses.contains(parameter.getType());
+                boolean player  = !minecraftCommand.allowPlayer() || playerClasses.contains(parameter.getType());
 
                 if (!console || !block || !player) {
                     throw new ConfigurationException("The @Sender field is wrongly configured: Please check that allowed entity types match the field type.");
@@ -144,9 +144,9 @@ public class PluginCommandImpl implements IPluginCommand {
         try {
             this.readCommandData();
             IMatchingResult<Method> matchingResult = this.getMatch(args);
-            Method                  exec           = matchingResult.getIdentifier();
-            Runnable                runnable       = exec.getAnnotation(Runnable.class);
-            PluginCommandImpl.validateExecutableStatus(sender, runnable);
+            Method           exec             = matchingResult.getIdentifier();
+            MinecraftCommand minecraftCommand = exec.getAnnotation(MinecraftCommand.class);
+            PluginCommandImpl.validateExecutableStatus(sender, minecraftCommand);
             List<Object> parameters = this.generateParameterList(matchingResult, exec, sender);
             this.call(exec, parameters);
         } catch (CommandException e) {
@@ -183,10 +183,10 @@ public class PluginCommandImpl implements IPluginCommand {
 
         this.commandMap.clear();
         for (Method declaredMethod : this.getClass().getDeclaredMethods()) {
-            if (declaredMethod.getAnnotation(Runnable.class) != null) {
-                Runnable        r         = declaredMethod.getAnnotation(Runnable.class);
-                List<String>    args      = Arrays.asList(r.value().split(" "));
-                SyntaxContainer container = this.core.createContainer(args);
+            if (declaredMethod.getAnnotation(MinecraftCommand.class) != null) {
+                MinecraftCommand r         = declaredMethod.getAnnotation(MinecraftCommand.class);
+                List<String>     args      = Arrays.asList(r.value().split(" "));
+                SyntaxContainer  container = this.core.createContainer(args);
                 this.commandMap.put(declaredMethod, container);
             }
         }
