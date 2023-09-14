@@ -1,8 +1,8 @@
 package mc.leaf.core.internal;
 
 import mc.leaf.core.api.command.PluginCommandImpl;
-import mc.leaf.core.api.command.annotations.Param;
 import mc.leaf.core.api.command.annotations.MinecraftCommand;
+import mc.leaf.core.api.command.annotations.Param;
 import mc.leaf.core.api.command.annotations.Sender;
 import mc.leaf.core.interfaces.ILeafCore;
 import mc.leaf.core.interfaces.ILeafModule;
@@ -28,8 +28,12 @@ public class LeafCommand extends PluginCommandImpl {
     @MinecraftCommand(value = "", allowConsole = true, allowCommandBlock = true)
     public void noArgs(@Sender CommandSender sender) {
 
-        sender.sendMessage(String.format("%s Plugin version %s", PluginCommandImpl.PREFIX, this.getCore()
-                .asPlugin().getDescription().getVersion()));
+        sender.sendMessage(
+                String.format("%s Plugin version %s",
+                        PluginCommandImpl.PREFIX,
+                        this.getCore().asPlugin().getPluginMeta().getVersion()
+                )
+        );
 
     }
 
@@ -43,14 +47,14 @@ public class LeafCommand extends PluginCommandImpl {
 
         List<Component> components = new ArrayList<>();
         for (ILeafModule module : this.getCore().getLeafModules()) {
-            String description = module.getPlugin().getDescription().getDescription();
+            String description = module.getPlugin().getPluginMeta().getDescription();
 
             Component moduleNameComponent = Component
                     .text(module.getName())
                     .color(module.isEnabled() ? MinecraftColors.GREEN : MinecraftColors.RED);
 
             Component moduleVersionComponent = Component
-                    .text(module.getPlugin().getDescription().getVersion())
+                    .text(module.getPlugin().getPluginMeta().getVersion())
                     .color(MinecraftColors.AQUA);
 
             Component moduleDescriptionComponent;
