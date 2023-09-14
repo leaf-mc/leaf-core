@@ -7,22 +7,27 @@ plugins {
     id 'org.ajoberstar.reckon' version '0.18.0'
 }
 
-def generalCharset = StandardCharsets.UTF_8.name();
-
-reckon {
-    scopeFromProp()
-    stageFromProp('dev', 'beta', 'rc', 'final')
+def targetJavaVersion = 17
+def generalCharset = StandardCharsets.UTF_8.name()
+static def isNonStable(String version) {
+    def stableKeyword = ['RELEASE', 'FINAL', 'GA'].any { it -> version.toUpperCase().contains(it) }
+    def regex = /^[0-9,.v-]+(-r)?$/
+    return !stableKeyword && !(version ==~ regex)
 }
 
 group = pluginGroup
 
-def targetJavaVersion = 17
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
-
 compileJava.options.encoding = generalCharset
 compileTestJava.options.encoding = generalCharset
 javadoc.options.encoding = generalCharset
+
+reckon {
+    defaultInferredScope = 'patch'
+    stages('dev', 'beta', 'rc', 'final')
+
+    scopeCalc = calcScopeFromProp() | calcScopeFromCommitMessages()
+    stageCalc = calcStageFromProp()
+}
 
 repositories {
     mavenCentral()
@@ -93,7 +98,7 @@ tasks.withType(JavaCompile).configureEach {
     }
 }
 
-tasks.withType(Jar) {
+tasks.withType(Jar).configureEach {
     if (project.properties.containsKey("workspace")) {
         destinationDir = file("$rootDir/.papermc/plugins")
     }
@@ -105,5 +110,11 @@ processResources {
     filteringCharset 'UTF-8'
     filesMatching('plugin.yml') {
         expand props
+    }
+}
+
+dependencyUpdates {
+    rejectVersionIf {
+        isNonStable(it.candidate.version) && !isNonStable(it.currentVersion)
     }
 }
