@@ -3,10 +3,9 @@ package mc.leaf.core.events.interfaces;
 import com.destroystokyo.paper.event.block.AnvilDamagedEvent;
 import com.destroystokyo.paper.event.block.BeaconEffectEvent;
 import com.destroystokyo.paper.event.block.BlockDestroyEvent;
-import com.destroystokyo.paper.event.block.TNTPrimeEvent;
 import com.destroystokyo.paper.event.entity.*;
-import com.destroystokyo.paper.event.inventory.PrepareGrindstoneEvent;
 import com.destroystokyo.paper.event.inventory.PrepareResultEvent;
+import com.destroystokyo.paper.event.player.PlayerRecipeBookClickEvent;
 import com.destroystokyo.paper.event.player.*;
 import com.destroystokyo.paper.event.profile.*;
 import com.destroystokyo.paper.event.server.*;
@@ -16,13 +15,14 @@ import io.papermc.paper.event.packet.PlayerChunkLoadEvent;
 import io.papermc.paper.event.packet.PlayerChunkUnloadEvent;
 import io.papermc.paper.event.player.*;
 import io.papermc.paper.event.server.ServerResourcesReloadedEvent;
-import io.papermc.paper.event.world.StructureLocateEvent;
+import io.papermc.paper.event.server.WhitelistStateUpdateEvent;
 import io.papermc.paper.event.world.StructuresLocateEvent;
 import io.papermc.paper.event.world.WorldGameRuleChangeEvent;
 import io.papermc.paper.event.world.border.WorldBorderBoundsChangeEvent;
 import io.papermc.paper.event.world.border.WorldBorderBoundsChangeFinishEvent;
 import io.papermc.paper.event.world.border.WorldBorderCenterChangeEvent;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BellRingEvent;
 import org.bukkit.event.block.*;
 import org.bukkit.event.command.UnknownCommandEvent;
 import org.bukkit.event.enchantment.EnchantItemEvent;
@@ -62,25 +62,21 @@ public interface ILeafListener extends Listener {
     // <editor-fold desc="block">
     void onAnvilDamaged(AnvilDamagedEvent event);
 
-    void onBeaconEffect(BeaconEffectEvent event);
-
-    void onBlockDestroy(BlockDestroyEvent event);
-
-    void onTNTPrime(TNTPrimeEvent event);
-
     void onBeaconActivated(BeaconActivatedEvent event);
 
     void onBeaconDeactivated(BeaconDeactivatedEvent event);
 
-    void onBellRevealRaider(BellRevealRaiderEvent event);
+    void onBeaconEffect(BeaconEffectEvent event);
 
-    void onBellRing(BellRingEvent event);
+    void onBlockDestroy(BlockDestroyEvent event);
 
     void onBlockBreakBlock(BlockBreakBlockEvent event);
 
     void onBlockFailedDispense(BlockFailedDispenseEvent event);
 
     void onBlockPreDispense(BlockPreDispenseEvent event);
+
+    void onCompostItem(CompostItemEvent event);
 
     void onDragonEggForm(DragonEggFormEvent event);
 
@@ -114,9 +110,6 @@ public interface ILeafListener extends Listener {
 
     void onEntityTeleportEndGateway(EntityTeleportEndGatewayEvent event);
 
-    @Deprecated
-    void onEntityTransformed(EntityTransformedEvent event);
-
     void onEntityZap(EntityZapEvent event);
 
     void onExperienceOrbMerge(ExperienceOrbMergeEvent event);
@@ -128,8 +121,6 @@ public interface ILeafListener extends Listener {
     void onPreCreatureSpawn(PreCreatureSpawnEvent event);
 
     void onPreSpawnerSpawn(PreSpawnerSpawnEvent event);
-
-    void onProjectileCollide(ProjectileCollideEvent event);
 
     void onSkeletonHorseTrap(SkeletonHorseTrapEvent event);
 
@@ -159,9 +150,13 @@ public interface ILeafListener extends Listener {
 
     void onElderGuardianAppearance(ElderGuardianAppearanceEvent event);
 
+    void onEntityCompostItem(EntityCompostItemEvent event);
+
     void onEntityDamageItem(EntityDamageItemEvent event);
 
     void onEntityDye(EntityDyeEvent event);
+
+    void onEntityFertilizeEgg(EntityFertilizeEggEvent event);
 
     void onEntityInsideBlock(EntityInsideBlockEvent event);
 
@@ -171,23 +166,25 @@ public interface ILeafListener extends Listener {
 
     void onEntityPortalReady(EntityPortalReadyEvent event);
 
+    void onEntityPushedByEntityAttack(EntityPushedByEntityAttackEvent event);
+
+    void onEntityToggleSit(EntityToggleSitEvent event);
+
     void onPufferFishStateChange(PufferFishStateChangeEvent event);
 
     void onTameableDeathMessage(TameableDeathMessageEvent event);
 
     void onWardenAngerChange(WardenAngerChangeEvent event);
 
+    void onWaterBottleSplash(WaterBottleSplashEvent event);
+
     // </editor-fold>
     // <editor-fold desc="inventory">
-    @Deprecated
-    void onPrepareGrindstone(PrepareGrindstoneEvent event);
 
     void onPrepareResult(PrepareResultEvent event);
 
     // </editor-fold>
     // <editor-fold desc="player">
-    @Deprecated
-    void onIllegalPacked(IllegalPacketEvent event);
 
     void onPlayerAdvancementCriterionGrant(PlayerAdvancementCriterionGrantEvent event);
 
@@ -202,9 +199,6 @@ public interface ILeafListener extends Listener {
     void onPlayerElytraBoost(PlayerElytraBoostEvent event);
 
     void onPlayerHandshake(PlayerHandshakeEvent event);
-
-    @Deprecated
-    void onPlayerInitialSpawn(PlayerInitialSpawnEvent event);
 
     void onPlayerJumpEvent(PlayerJumpEvent event);
 
@@ -236,9 +230,6 @@ public interface ILeafListener extends Listener {
 
     void onAsyncChat(AsyncChatEvent event);
 
-    @Deprecated
-    void onChat(ChatEvent event);
-
     void onPlayerArmSwingEvent(PlayerArmSwingEvent event);
 
     void onPlayerBedFailEnter(PlayerBedFailEnterEvent event);
@@ -247,7 +238,11 @@ public interface ILeafListener extends Listener {
 
     void onPlayerDeepSleep(PlayerDeepSleepEvent event);
 
+    void onPlayerFailMove(PlayerFailMoveEvent event);
+
     void onPlayerFlowerPotManipulate(PlayerFlowerPotManipulateEvent event);
+
+    void onPlayerInventorySlotChange(PlayerInventorySlotChangeEvent event);
 
     void onPlayerItemCooldown(PlayerItemCooldownEvent event);
 
@@ -259,6 +254,10 @@ public interface ILeafListener extends Listener {
 
     void onPlayerNameEntity(PlayerNameEntityEvent event);
 
+    void onPlayerOpenSign(PlayerOpenSignEvent event);
+
+    void onPlayerPickItem(PlayerPickItemEvent event);
+
     void onPlayerPurchase(PlayerPurchaseEvent event);
 
     void onPlayerSignCommandPreprocess(PlayerSignCommandPreprocessEvent event);
@@ -267,7 +266,13 @@ public interface ILeafListener extends Listener {
 
     void onPlayerStopUsingItem(PlayerStopUsingItemEvent event);
 
+    void onPlayerTrackEntity(PlayerTrackEntityEvent event);
+
     void onPlayerTrade(PlayerTradeEvent event);
+
+    void onPlayerUntrackEntity(PlayerUntrackEntityEvent event);
+
+    void onPrePlayerAttackEntity(PrePlayerAttackEntityEvent event);
 
     // </editor-fold>
     // <editor-fold desc="profile">
@@ -299,6 +304,8 @@ public interface ILeafListener extends Listener {
 
     void onServerResourcesReloaded(ServerResourcesReloadedEvent event);
 
+    void onWhitelistStateUpdate(WhitelistStateUpdateEvent event);
+
     // </editor-fold>
     // <editor-fold desc="packet">
     void onPlayerChunkLoad(PlayerChunkLoadEvent event);
@@ -309,12 +316,9 @@ public interface ILeafListener extends Listener {
     // <editor-fold desc="world">
     void onWorldBorderBoundsChange(WorldBorderBoundsChangeEvent event);
 
-    void onWorldBorderBoundsChangeFinished(WorldBorderBoundsChangeFinishEvent event);
+    void onWorldBorderBoundsChangeFinish(WorldBorderBoundsChangeFinishEvent event);
 
-    void onWorldBoardCenterChange(WorldBorderCenterChangeEvent event);
-
-    @Deprecated(forRemoval = true)
-    void onStructureLocate(StructureLocateEvent event);
+    void onWorldBorderCenterChange(WorldBorderCenterChangeEvent event);
 
     void onStructuresLocate(StructuresLocateEvent event);
 
@@ -324,6 +328,10 @@ public interface ILeafListener extends Listener {
     // </editor-fold>
     // <editor-fold desc="Bukkit Events">
     // <editor-fold desc="block">
+    void onBellResonate(BellResonateEvent event);
+
+    void onBellRing(BellRingEvent event);
+
     void onBlockBreak(BlockBreakEvent event);
 
     void onBlockBurn(BlockBurnEvent event);
@@ -376,6 +384,8 @@ public interface ILeafListener extends Listener {
 
     void onBlockSpread(BlockSpreadEvent event);
 
+    void onCampfireStart(CampfireStartEvent event);
+
     void onCauldronLevelChange(CauldronLevelChangeEvent event);
 
     void onEntityBlockForm(EntityBlockFormEvent event);
@@ -391,6 +401,8 @@ public interface ILeafListener extends Listener {
     void onSignChange(SignChangeEvent event);
 
     void onSpongeAbsorb(SpongeAbsorbEvent event);
+
+    void onTNTPrime(TNTPrimeEvent event);
 
     // </editor-fold>
     // <editor-fold desc="command">
@@ -429,9 +441,6 @@ public interface ILeafListener extends Listener {
     void onEntityCombustByEntity(EntityCombustByEntityEvent event);
 
     void onEntityCombust(EntityCombustEvent event);
-
-    @Deprecated
-    void onEntityCreatePortal(EntityCreatePortalEvent event);
 
     void onEntityDamageByBlock(EntityDamageByBlockEvent event);
 
@@ -567,6 +576,8 @@ public interface ILeafListener extends Listener {
 
     void onFurnaceStartSmelt(FurnaceStartSmeltEvent event);
 
+    void onHopperInventorySearch(HopperInventorySearchEvent event);
+
     void onInventoryClick(InventoryClickEvent event);
 
     void onInventoryClose(InventoryCloseEvent event);
@@ -585,6 +596,8 @@ public interface ILeafListener extends Listener {
 
     void onPrepareAnvil(PrepareAnvilEvent event);
 
+    void onPrepareGrindstone(PrepareGrindstoneEvent event);
+
     void onPrepareItemCraft(PrepareItemCraftEvent event);
 
     void onPrepareSmithing(PrepareSmithingEvent event);
@@ -595,11 +608,6 @@ public interface ILeafListener extends Listener {
 
     // </editor-fold>
     // <editor-fold desc="player">
-    @Deprecated
-    void onAsyncPlayerChat(AsyncPlayerChatEvent event);
-
-    @Deprecated
-    void onAsyncPlayerChatPreview(AsyncPlayerChatPreviewEvent event);
 
     void onAsyncPlayerPreLogin(AsyncPlayerPreLoginEvent event);
 
@@ -621,18 +629,9 @@ public interface ILeafListener extends Listener {
 
     void onPlayerBucketFill(PlayerBucketFillEvent event);
 
-    @Deprecated
-    void onPlayerBucketFish(PlayerBucketFishEvent event);
-
     void onPlayerChangedMainHand(PlayerChangedMainHandEvent event);
 
     void onPlayerChangedWorld(PlayerChangedWorldEvent event);
-
-    @Deprecated
-    void onPlayerChat(PlayerChatEvent event);
-
-    @Deprecated
-    void onPlayerChatTabComplete(PlayerChatTabCompleteEvent event);
 
     void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event);
 
@@ -685,13 +684,7 @@ public interface ILeafListener extends Listener {
 
     void onPlayerPickupArrow(PlayerPickupArrowEvent event);
 
-    @Deprecated
-    void onPlayerPickupItem(PlayerPickupItemEvent event);
-
     void onPlayerPortal(PlayerPortalEvent event);
-
-    @Deprecated
-    void onPlayerPreLogin(PlayerPreLoginEvent event);
 
     void onPlayerQuit(PlayerQuitEvent event);
 
@@ -794,6 +787,8 @@ public interface ILeafListener extends Listener {
 
     // </editor-fold>
     // <editor-fold desc="world">
+    void onAsyncStructureSpawn(AsyncStructureSpawnEvent event);
+
     void onChunkLoad(ChunkLoadEvent event);
 
     void onChunkPopulate(ChunkPopulateEvent event);

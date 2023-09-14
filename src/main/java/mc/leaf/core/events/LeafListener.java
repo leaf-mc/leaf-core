@@ -3,10 +3,9 @@ package mc.leaf.core.events;
 import com.destroystokyo.paper.event.block.AnvilDamagedEvent;
 import com.destroystokyo.paper.event.block.BeaconEffectEvent;
 import com.destroystokyo.paper.event.block.BlockDestroyEvent;
-import com.destroystokyo.paper.event.block.TNTPrimeEvent;
 import com.destroystokyo.paper.event.entity.*;
-import com.destroystokyo.paper.event.inventory.PrepareGrindstoneEvent;
 import com.destroystokyo.paper.event.inventory.PrepareResultEvent;
+import com.destroystokyo.paper.event.player.PlayerRecipeBookClickEvent;
 import com.destroystokyo.paper.event.player.*;
 import com.destroystokyo.paper.event.profile.*;
 import com.destroystokyo.paper.event.server.*;
@@ -16,13 +15,14 @@ import io.papermc.paper.event.packet.PlayerChunkLoadEvent;
 import io.papermc.paper.event.packet.PlayerChunkUnloadEvent;
 import io.papermc.paper.event.player.*;
 import io.papermc.paper.event.server.ServerResourcesReloadedEvent;
-import io.papermc.paper.event.world.StructureLocateEvent;
+import io.papermc.paper.event.server.WhitelistStateUpdateEvent;
 import io.papermc.paper.event.world.StructuresLocateEvent;
 import io.papermc.paper.event.world.WorldGameRuleChangeEvent;
 import io.papermc.paper.event.world.border.WorldBorderBoundsChangeEvent;
 import io.papermc.paper.event.world.border.WorldBorderBoundsChangeFinishEvent;
 import io.papermc.paper.event.world.border.WorldBorderCenterChangeEvent;
 import mc.leaf.core.events.interfaces.ILeafListener;
+import org.bukkit.event.block.BellRingEvent;
 import org.bukkit.event.block.*;
 import org.bukkit.event.command.UnknownCommandEvent;
 import org.bukkit.event.enchantment.EnchantItemEvent;
@@ -62,21 +62,6 @@ public class LeafListener implements ILeafListener {
     }
 
     @Override
-    public void onBeaconEffect(BeaconEffectEvent event) {
-
-    }
-
-    @Override
-    public void onBlockDestroy(BlockDestroyEvent event) {
-
-    }
-
-    @Override
-    public void onTNTPrime(TNTPrimeEvent event) {
-
-    }
-
-    @Override
     public void onBeaconActivated(BeaconActivatedEvent event) {
 
     }
@@ -87,12 +72,12 @@ public class LeafListener implements ILeafListener {
     }
 
     @Override
-    public void onBellRevealRaider(BellRevealRaiderEvent event) {
+    public void onBeaconEffect(BeaconEffectEvent event) {
 
     }
 
     @Override
-    public void onBellRing(BellRingEvent event) {
+    public void onBlockDestroy(BlockDestroyEvent event) {
 
     }
 
@@ -108,6 +93,11 @@ public class LeafListener implements ILeafListener {
 
     @Override
     public void onBlockPreDispense(BlockPreDispenseEvent event) {
+
+    }
+
+    @Override
+    public void onCompostItem(CompostItemEvent event) {
 
     }
 
@@ -187,12 +177,6 @@ public class LeafListener implements ILeafListener {
     }
 
     @Override
-    @Deprecated
-    public void onEntityTransformed(EntityTransformedEvent event) {
-
-    }
-
-    @Override
     public void onEntityZap(EntityZapEvent event) {
 
     }
@@ -219,11 +203,6 @@ public class LeafListener implements ILeafListener {
 
     @Override
     public void onPreSpawnerSpawn(PreSpawnerSpawnEvent event) {
-
-    }
-
-    @Override
-    public void onProjectileCollide(ProjectileCollideEvent event) {
 
     }
 
@@ -298,12 +277,22 @@ public class LeafListener implements ILeafListener {
     }
 
     @Override
+    public void onEntityCompostItem(EntityCompostItemEvent event) {
+
+    }
+
+    @Override
     public void onEntityDamageItem(EntityDamageItemEvent event) {
 
     }
 
     @Override
     public void onEntityDye(EntityDyeEvent event) {
+
+    }
+
+    @Override
+    public void onEntityFertilizeEgg(EntityFertilizeEggEvent event) {
 
     }
 
@@ -328,6 +317,16 @@ public class LeafListener implements ILeafListener {
     }
 
     @Override
+    public void onEntityPushedByEntityAttack(EntityPushedByEntityAttackEvent event) {
+
+    }
+
+    @Override
+    public void onEntityToggleSit(EntityToggleSitEvent event) {
+
+    }
+
+    @Override
     public void onPufferFishStateChange(PufferFishStateChangeEvent event) {
 
     }
@@ -343,19 +342,12 @@ public class LeafListener implements ILeafListener {
     }
 
     @Override
-    @Deprecated
-    public void onPrepareGrindstone(PrepareGrindstoneEvent event) {
+    public void onWaterBottleSplash(WaterBottleSplashEvent event) {
 
     }
 
     @Override
     public void onPrepareResult(PrepareResultEvent event) {
-
-    }
-
-    @Override
-    @Deprecated
-    public void onIllegalPacked(IllegalPacketEvent event) {
 
     }
 
@@ -391,12 +383,6 @@ public class LeafListener implements ILeafListener {
 
     @Override
     public void onPlayerHandshake(PlayerHandshakeEvent event) {
-
-    }
-
-    @Override
-    @Deprecated
-    public void onPlayerInitialSpawn(PlayerInitialSpawnEvent event) {
 
     }
 
@@ -471,12 +457,6 @@ public class LeafListener implements ILeafListener {
     }
 
     @Override
-    @Deprecated
-    public void onChat(ChatEvent event) {
-
-    }
-
-    @Override
     public void onPlayerArmSwingEvent(PlayerArmSwingEvent event) {
 
     }
@@ -497,7 +477,17 @@ public class LeafListener implements ILeafListener {
     }
 
     @Override
+    public void onPlayerFailMove(PlayerFailMoveEvent event) {
+
+    }
+
+    @Override
     public void onPlayerFlowerPotManipulate(PlayerFlowerPotManipulateEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerInventorySlotChange(PlayerInventorySlotChangeEvent event) {
 
     }
 
@@ -527,6 +517,16 @@ public class LeafListener implements ILeafListener {
     }
 
     @Override
+    public void onPlayerOpenSign(PlayerOpenSignEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerPickItem(PlayerPickItemEvent event) {
+
+    }
+
+    @Override
     public void onPlayerPurchase(PlayerPurchaseEvent event) {
 
     }
@@ -547,7 +547,22 @@ public class LeafListener implements ILeafListener {
     }
 
     @Override
+    public void onPlayerTrackEntity(PlayerTrackEntityEvent event) {
+
+    }
+
+    @Override
     public void onPlayerTrade(PlayerTradeEvent event) {
+
+    }
+
+    @Override
+    public void onPlayerUntrackEntity(PlayerUntrackEntityEvent event) {
+
+    }
+
+    @Override
+    public void onPrePlayerAttackEntity(PrePlayerAttackEntityEvent event) {
 
     }
 
@@ -617,6 +632,11 @@ public class LeafListener implements ILeafListener {
     }
 
     @Override
+    public void onWhitelistStateUpdate(WhitelistStateUpdateEvent event) {
+
+    }
+
+    @Override
     public void onPlayerChunkLoad(PlayerChunkLoadEvent event) {
 
     }
@@ -632,18 +652,12 @@ public class LeafListener implements ILeafListener {
     }
 
     @Override
-    public void onWorldBorderBoundsChangeFinished(WorldBorderBoundsChangeFinishEvent event) {
+    public void onWorldBorderBoundsChangeFinish(WorldBorderBoundsChangeFinishEvent event) {
 
     }
 
     @Override
-    public void onWorldBoardCenterChange(WorldBorderCenterChangeEvent event) {
-
-    }
-
-    @Override
-    @Deprecated(forRemoval = true)
-    public void onStructureLocate(StructureLocateEvent event) {
+    public void onWorldBorderCenterChange(WorldBorderCenterChangeEvent event) {
 
     }
 
@@ -654,6 +668,16 @@ public class LeafListener implements ILeafListener {
 
     @Override
     public void onWorldGameRuleChange(WorldGameRuleChangeEvent event) {
+
+    }
+
+    @Override
+    public void onBellResonate(BellResonateEvent event) {
+
+    }
+
+    @Override
+    public void onBellRing(BellRingEvent event) {
 
     }
 
@@ -788,6 +812,11 @@ public class LeafListener implements ILeafListener {
     }
 
     @Override
+    public void onCampfireStart(CampfireStartEvent event) {
+
+    }
+
+    @Override
     public void onCauldronLevelChange(CauldronLevelChangeEvent event) {
 
     }
@@ -824,6 +853,11 @@ public class LeafListener implements ILeafListener {
 
     @Override
     public void onSpongeAbsorb(SpongeAbsorbEvent event) {
+
+    }
+
+    @Override
+    public void onTNTPrime(TNTPrimeEvent event) {
 
     }
 
@@ -904,12 +938,6 @@ public class LeafListener implements ILeafListener {
 
     @Override
     public void onEntityCombust(EntityCombustEvent event) {
-
-    }
-
-    @Override
-    @Deprecated
-    public void onEntityCreatePortal(EntityCreatePortalEvent event) {
 
     }
 
@@ -1239,6 +1267,11 @@ public class LeafListener implements ILeafListener {
     }
 
     @Override
+    public void onHopperInventorySearch(HopperInventorySearchEvent event) {
+
+    }
+
+    @Override
     public void onInventoryClick(InventoryClickEvent event) {
 
     }
@@ -1284,6 +1317,11 @@ public class LeafListener implements ILeafListener {
     }
 
     @Override
+    public void onPrepareGrindstone(PrepareGrindstoneEvent event) {
+
+    }
+
+    @Override
     public void onPrepareItemCraft(PrepareItemCraftEvent event) {
 
     }
@@ -1300,18 +1338,6 @@ public class LeafListener implements ILeafListener {
 
     @Override
     public void onTradeSelect(TradeSelectEvent event) {
-
-    }
-
-    @Override
-    @Deprecated
-    public void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
-
-    }
-
-    @Override
-    @Deprecated
-    public void onAsyncPlayerChatPreview(AsyncPlayerChatPreviewEvent event) {
 
     }
 
@@ -1366,30 +1392,12 @@ public class LeafListener implements ILeafListener {
     }
 
     @Override
-    @Deprecated
-    public void onPlayerBucketFish(PlayerBucketFishEvent event) {
-
-    }
-
-    @Override
     public void onPlayerChangedMainHand(PlayerChangedMainHandEvent event) {
 
     }
 
     @Override
     public void onPlayerChangedWorld(PlayerChangedWorldEvent event) {
-
-    }
-
-    @Override
-    @Deprecated
-    public void onPlayerChat(PlayerChatEvent event) {
-
-    }
-
-    @Override
-    @Deprecated
-    public void onPlayerChatTabComplete(PlayerChatTabCompleteEvent event) {
 
     }
 
@@ -1519,19 +1527,7 @@ public class LeafListener implements ILeafListener {
     }
 
     @Override
-    @Deprecated
-    public void onPlayerPickupItem(PlayerPickupItemEvent event) {
-
-    }
-
-    @Override
     public void onPlayerPortal(PlayerPortalEvent event) {
-
-    }
-
-    @Override
-    @Deprecated
-    public void onPlayerPreLogin(PlayerPreLoginEvent event) {
 
     }
 
@@ -1761,6 +1757,11 @@ public class LeafListener implements ILeafListener {
     }
 
     @Override
+    public void onAsyncStructureSpawn(AsyncStructureSpawnEvent event) {
+
+    }
+
+    @Override
     public void onChunkLoad(ChunkLoadEvent event) {
 
     }
@@ -1849,5 +1850,4 @@ public class LeafListener implements ILeafListener {
     public void onPlayerSpawnLocation(PlayerSpawnLocationEvent event) {
 
     }
-
 }
